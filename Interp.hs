@@ -65,18 +65,12 @@ transf f d (xs,ys) a b c  = translate (fst a') (snd a') .
         a' = a V.+ half (b V.+ c)
 
 
+rotar :: FloatingPic -> FloatingPic
+rotar p a b c = p.(a+b, c, (-1*b))
+
+
 -- Claramente esto sólo funciona para el ejemplo!
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
 interp f (Basica a) = f ()
-
-
-
-
-
-
-
-
-
-
-
+interp f (Rotar d) = rotar $ interp f
