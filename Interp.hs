@@ -7,7 +7,7 @@ import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 import Dibujo
 type FloatingPic = Vector -> Vector -> Vector -> Picture
 type Output a = a -> FloatingPic
-
+-- type Output a = a -> (Vector -> Vector -> Vector -> Picture)
 -- el vector nulo
 zero :: Vector
 zero = (0,0)
@@ -66,5 +66,17 @@ transf f d (xs,ys) a b c  = translate (fst a') (snd a') .
 
 
 -- Claramente esto sólo funciona para el ejemplo!
+--inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
-interp f () = f ()
+interp f (Basica a) = f ()
+
+
+
+
+
+
+
+
+
+
+

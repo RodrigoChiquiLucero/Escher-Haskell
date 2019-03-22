@@ -18,7 +18,7 @@ ej x y = Conf {
               , fig = E.ejemplo
               , width = x
               , height = y
-              }
+              } 
 
 -- Dada una computación que construye una configuración, mostramos por
 -- pantalla la figura de la misma de acuerdo a la interpretación para
