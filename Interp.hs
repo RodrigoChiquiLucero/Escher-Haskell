@@ -64,13 +64,31 @@ transf f d (xs,ys) a b c  = translate (fst a') (snd a') .
   where ang = radToDeg $ argV b
         a' = a V.+ half (b V.+ c)
 
+--Def de suma de vectores y multiplicacion de num por vector
+sumarvec :: Vector -> Vector -> Vector
+sumarvec (a,b) (x,y) = (a+x, b+y)
 
+multvec :: Float -> Vector -> Vector
+multvec x (a,b) = (a*x, b*x)
+
+--Rotar ya lo tenemos como construcor 
 rotar :: FloatingPic -> FloatingPic
-rotar p a b c = p.(a+b, c, (-1*b))
+rotar p a b c = p (sumarvec a b) c (multvec (-1) b)
 
 
 -- Claramente esto sólo funciona para el ejemplo!
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
 interp f (Basica a) = f ()
-interp f (Rotar d) = rotar $ interp f
+interp f (Rotar d) = rotar $ interp f d
+
+
+
+
+
+
+
+
+
+
+

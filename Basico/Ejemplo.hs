@@ -8,3 +8,4 @@ ejemplo = Basica ()
 
 interpBas :: Output ()
 interpBas () = fShape
+--interpBas (
