@@ -7,5 +7,7 @@ ejemplo :: Dibujo ()
 ejemplo = Basica ()
 
 interpBas :: Output ()
-interpBas () = fShape
---interpBas (
+interpBas () = rot45 fShape
+--interpBas () = espejar fShape
+--interpBas () = rotar fShape
+--interpBas () = fShape

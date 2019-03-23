@@ -64,24 +64,45 @@ transf f d (xs,ys) a b c  = translate (fst a') (snd a') .
   where ang = radToDeg $ argV b
         a' = a V.+ half (b V.+ c)
 
---Def de suma de vectores y multiplicacion de num por vector
+--------------------Definimos operaciones para vectores--------------------
+--Def de suma de vectores
 sumarvec :: Vector -> Vector -> Vector
 sumarvec (a,b) (x,y) = (a+x, b+y)
 
+--Def resta de vectores
+resvec :: Vector -> Vector -> Vector
+resvec (a,b) (x,y) = (a-x, b-y)
+
+--Def de multiplicacion de numero por vector
 multvec :: Float -> Vector -> Vector
 multvec x (a,b) = (a*x, b*x)
+
+--Def de division de vectores
+divvec :: Float -> Vector -> Vector
+divvec x (a,b) = (a/x, b/x)
+
+---------------------------------------------------------------------------
 
 --Rotar ya lo tenemos como construcor 
 rotar :: FloatingPic -> FloatingPic
 rotar p a b c = p (sumarvec a b) c (multvec (-1) b)
 
+--Espejar ya lo tenemos como construcor 
+espejar :: FloatingPic -> FloatingPic
+espejar p a b c = p (sumarvec a b) (multvec (-1) b) c
 
--- Claramente esto sólo funciona para el ejemplo!
+--Rot45 ya lo tenemos como constructor
+rot45 :: FloatingPic -> FloatingPic
+rot45 p a b c = p (sumarvec a (divvec 2 (sumarvec b c))) (divvec 2 (sumarvec b c)) (divvec 2 (resvec c b))
+--p(a + (b + c)/2, (b + c)/2, (c − b)/2 
+
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
 interp f (Basica a) = f ()
 interp f (Rotar d) = rotar $ interp f d
-
+interp f (Espejar d) = espejar $ interp f d
+interp f (Rot45 d) = rot45 $ interp f d
+--interp f (Apilar d) = apilar $ interp f d
 
 
 
