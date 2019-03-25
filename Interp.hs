@@ -79,10 +79,7 @@ multvec x (a,b) = (a*x, b*x)
 --Def de division de vectores
 divvec :: Float -> Vector -> Vector
 divvec x (a,b) = (a/x, b/x)
-
---Def union de vectores 
---union ::  ->  -> Vector -
---union  = 
+ 
 ---------------------------------------------------------------------------
 
 --Rotar ya lo tenemos como construcor 
@@ -104,14 +101,14 @@ simple p _ _ _ = p
 --simple1 :: FloatingPic -> Picture
 --simple1 _ _ _ p = p
 
---Encimar
 --encimar :: FloatingPic  -> (Vector -> Vector -> Vector -> Picture) -> FloatingPic
 --preguntar porque rayos machea
+--Espejar ya lo tenemos como construcor 
 encimar :: FloatingPic -> FloatingPic -> FloatingPic
-encimar p r a b c = pictures [p a b c, r b b c]
+encimar p r a b c = pictures [p a b c, r a b c]
 
 
-
+--Espejar ya lo tenemos como construcor 
 apilar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
 apilar n m p q a b c = pictures[p (sumarvec a c') b (multvec r c), q a b c']
   where r' = n/(n+m)
@@ -121,6 +118,21 @@ apilar n m p q a b c = pictures[p (sumarvec a c') b (multvec r c), q a b c']
 --Apilar (n, m, p, q) (a, b, c) = p(a + c', b, r*c) U q(a, b, c') donde
  --                                   r' = n/n+m, r =m/n+m, c'=r' * c
 
+--juntar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
+--juntar n m p r a b c = pictures [p a b c, r b b c]
+
+juntar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
+juntar n m p q a b c = pictures[p a b' c, q (sumarvec a b') (multvec r' b) c]
+    where r' = n/(m+n)
+          r = m/(m+n)
+          b' = multvec r b
+
+--cuarteto :: FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic
+--cuarteto p q r s a b c = apilar 1 1 (juntar 1 1 p q) (juntar 1 1 r s)
+
+--apilar 1 1 (juntar 1 1 fShape fShape) (juntar 1 1 fShape fShape)
+
+
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
 interp f (Basica a) = f ()
@@ -129,13 +141,5 @@ interp f (Espejar d) = espejar $ interp f d
 interp f (Rot45 d) = rot45 $ interp f d
 interp f (Encimar d h) = encimar (interp f d) (interp f h)
 interp f (Apilar n m d h) = apilar n m (interp f d) (interp f h)
-
-
-
-
-
-
-
-
-
-
+interp f (Juntar n m d h) = juntar n m (interp f d) (interp f h)
+--interp f ()
