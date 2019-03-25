@@ -115,6 +115,13 @@ juntar n m p q a b c = pictures[p a b' c, q (sumarvec a b') (multvec r' b) c]
         r = m/(n+m)
         b' = multvec r b
 
+-----------------------------------------------------------------------------------
+
+comp :: (a -> a) -> Int -> (a -> a)
+comp f n = if n > 0 then f . comp f (n-1) else f
+
+--r180 :: Dibujo a -> Dibujo a
+--r180 x = (comp rotar 2) x
 
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
@@ -125,7 +132,7 @@ interp f (Rot45 d) = rot45 $ interp f d
 interp f (Encimar d h) = encimar (interp f d) (interp f h)
 interp f (Apilar n m d h) = apilar n m (interp f d) (interp f h)
 interp f (Juntar n m d h) = juntar n m (interp f d) (interp f h)
-
+ 
 
 
 
