@@ -19,3 +19,7 @@ interpBas :: Output ()
 --interpBas () = r180 ejemplo
 --interpBas () = apilar 1 1 trian1 (juntar 3 3 (espejar (rot45 fShape)) trian1)
 interpBas () = r180 trian1
+
+--cuarteto y encimar4 como ejemplos 
+--interpBas () = apilar 1 1 (juntar 1 1 fShape fShape) (juntar 1 1 fShape fShape) --cuarteto
+--interpBas () = encimar (rotar trian2) (encimar ((comp (rotar) 2) trian2) (encimar ((comp (rotar) 3) trian2) ((comp (rotar) 4) trian2)))   --encimar4

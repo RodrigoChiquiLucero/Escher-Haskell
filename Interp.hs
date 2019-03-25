@@ -132,14 +132,3 @@ interp f (Rot45 d) = rot45 $ interp f d
 interp f (Encimar d h) = encimar (interp f d) (interp f h)
 interp f (Apilar n m d h) = apilar n m (interp f d) (interp f h)
 interp f (Juntar n m d h) = juntar n m (interp f d) (interp f h)
- 
-
-
-
-
-
-
-
-
-
-
