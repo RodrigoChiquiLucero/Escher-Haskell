@@ -120,8 +120,8 @@ juntar n m p q a b c = pictures[p a b' c, q (sumarvec a b') (multvec r' b) c]
 comp :: (a -> a) -> Int -> (a -> a)
 comp f n = if n > 0 then f . comp f (n-1) else f
 
---r180 :: Dibujo a -> Dibujo a
---r180 x = (comp rotar 2) x
+r180 :: FloatingPic -> FloatingPic
+r180 x = (comp rotar 1) x
 
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
