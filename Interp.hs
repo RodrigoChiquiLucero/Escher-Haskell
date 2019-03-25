@@ -89,7 +89,7 @@ rotar :: FloatingPic -> FloatingPic
 rotar p a b c = p (sumarvec a b) c (multvec (-1) b)
 
 --Espejar ya lo tenemos como construcor 
-espejar :: FloatingPic -> FloatingPic
+espejar :: FloatingPic -> FloatingPics
 espejar p a b c = p (sumarvec a b) (multvec (-1) b) c
 
 --Rot45 ya lo tenemos como constructor
@@ -107,7 +107,7 @@ simple p _ _ _ = p
 --encimar :: FloatingPic  -> (Vector -> Vector -> Vector -> Picture) -> FloatingPic
 --preguntar porque rayos machea
 encimar :: FloatingPic -> FloatingPic -> FloatingPic
-encimar p r a b c = pictures [p a b c, r a b c]
+encimar p r a b c = pictures [p a b c, r b b c]
 
 
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
