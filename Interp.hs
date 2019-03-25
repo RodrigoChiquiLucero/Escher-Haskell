@@ -40,6 +40,8 @@ trianD a b c = line $ map (a V.+) [c, half b , b V.+ c , c]
 rectan :: FloatingPic
 rectan a b c = line [a, a V.+ b, a V.+ b V.+ c, a V.+ c,a]
 
+simple :: Picture -> FloatingPic
+simple p _ _ _ = p
 
 fShape :: FloatingPic
 fShape a b c = line . map (a V.+) $ [ zero,uX, p13, p33, p33 V.+ uY , p13 V.+ uY 
@@ -79,10 +81,6 @@ multvec x (a,b) = (a*x, b*x)
 --Def de division de vectores
 divvec :: Float -> Vector -> Vector
 divvec x (a,b) = (a/x, b/x)
-
---Def union de vectores 
---union ::  ->  -> Vector -
---union  = 
 ---------------------------------------------------------------------------
 
 --Rotar ya lo tenemos como construcor 
@@ -98,18 +96,11 @@ rot45 :: FloatingPic -> FloatingPic
 rot45 p a b c = p (sumarvec a (divvec 2 (sumarvec b c))) (divvec 2 (sumarvec b c)) (divvec 2 (resvec c b))
 --p(a + (b + c)/2, (b + c)/2, (c − b)/2 
 
-simple :: Picture -> FloatingPic
-simple p _ _ _ = p
-
---simple1 :: FloatingPic -> Picture
---simple1 _ _ _ p = p
-
 --Encimar
 --encimar :: FloatingPic  -> (Vector -> Vector -> Vector -> Picture) -> FloatingPic
 --preguntar porque rayos machea
 encimar :: FloatingPic -> FloatingPic -> FloatingPic
 encimar p r a b c = pictures [p a b c, r b b c]
-
 
 
 apilar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
@@ -118,8 +109,12 @@ apilar n m p q a b c = pictures[p (sumarvec a c') b (multvec r c), q a b c']
         r = m/(n+m)
         c' = multvec r' c
 
---Apilar (n, m, p, q) (a, b, c) = p(a + c', b, r*c) U q(a, b, c') donde
- --                                   r' = n/n+m, r =m/n+m, c'=r' * c
+juntar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
+juntar n m p q a b c = pictures[p a b' c, q (sumarvec a b') (multvec r' b) c]
+  where r' = n/(n+m)
+        r = m/(n+m)
+        b' = multvec r b
+
 
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
@@ -129,6 +124,8 @@ interp f (Espejar d) = espejar $ interp f d
 interp f (Rot45 d) = rot45 $ interp f d
 interp f (Encimar d h) = encimar (interp f d) (interp f h)
 interp f (Apilar n m d h) = apilar n m (interp f d) (interp f h)
+interp f (Juntar n m d h) = juntar n m (interp f d) (interp f h)
+
 
 
 
