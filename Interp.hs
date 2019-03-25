@@ -40,8 +40,6 @@ trianD a b c = line $ map (a V.+) [c, half b , b V.+ c , c]
 rectan :: FloatingPic
 rectan a b c = line [a, a V.+ b, a V.+ b V.+ c, a V.+ c,a]
 
-simple :: Picture -> FloatingPic
-simple p _ _ _ = p
 
 fShape :: FloatingPic
 fShape a b c = line . map (a V.+) $ [ zero,uX, p13, p33, p33 V.+ uY , p13 V.+ uY 
@@ -81,6 +79,9 @@ multvec x (a,b) = (a*x, b*x)
 divvec :: Float -> Vector -> Vector
 divvec x (a,b) = (a/x, b/x)
 
+--Def union de vectores 
+--union ::  ->  -> Vector -
+--union  = 
 ---------------------------------------------------------------------------
 
 --Rotar ya lo tenemos como construcor 
@@ -96,12 +97,26 @@ rot45 :: FloatingPic -> FloatingPic
 rot45 p a b c = p (sumarvec a (divvec 2 (sumarvec b c))) (divvec 2 (sumarvec b c)) (divvec 2 (resvec c b))
 --p(a + (b + c)/2, (b + c)/2, (c − b)/2 
 
+simple :: Picture -> FloatingPic
+simple p _ _ _ = p
+
+--simple1 :: FloatingPic -> Picture
+--simple1 _ _ _ p = p
+
+--Encimar
+--encimar :: FloatingPic  -> (Vector -> Vector -> Vector -> Picture) -> FloatingPic
+--preguntar porque rayos machea
+encimar :: FloatingPic -> FloatingPic -> FloatingPic
+encimar p r a b c = pictures [p a b c, r a b c]
+
+
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
 interp f (Basica a) = f ()
 interp f (Rotar d) = rotar $ interp f d
 interp f (Espejar d) = espejar $ interp f d
 interp f (Rot45 d) = rot45 $ interp f d
+interp f (Encimar d h) = encimar (interp f d) (interp f h)
 --interp f (Apilar d) = apilar $ interp f d
 
 
