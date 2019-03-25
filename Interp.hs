@@ -40,8 +40,8 @@ trianD a b c = line $ map (a V.+) [c, half b , b V.+ c , c]
 rectan :: FloatingPic
 rectan a b c = line [a, a V.+ b, a V.+ b V.+ c, a V.+ c,a]
 
-simple :: Picture -> FloatingPic
-simple p _ _ _ = p
+--simple :: Picture -> FloatingPic
+--simple p _ _ _ = p
 
 fShape :: FloatingPic
 fShape a b c = line . map (a V.+) $ [ zero,uX, p13, p33, p33 V.+ uY , p13 V.+ uY 
@@ -97,11 +97,6 @@ rot45 :: FloatingPic -> FloatingPic
 rot45 p a b c = p (sumarvec a (divvec 2 (sumarvec b c))) (divvec 2 (sumarvec b c)) (divvec 2 (resvec c b))
 --p(a + (b + c)/2, (b + c)/2, (c − b)/2 
 
-simple :: Picture -> FloatingPic
-simple p _ _ _ = p
-
---simple1 :: FloatingPic -> Picture
---simple1 _ _ _ p = p
 
 --Encimar
 --encimar :: FloatingPic  -> (Vector -> Vector -> Vector -> Picture) -> FloatingPic
