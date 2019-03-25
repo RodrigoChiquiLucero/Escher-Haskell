@@ -8,7 +8,8 @@ ejemplo = Basica ()
 
 interpBas :: Output ()
 --interpBas () = trian1
-interpBas () = encimar fShape trian1
+interpBas () = apilar 3 3 fShape trian1
+--interpBas () = encimar fShape trian1
 --interpBas () = rot45 fShape
 --interpBas () = espejar fShape
 --interpBas () = rotar fShape

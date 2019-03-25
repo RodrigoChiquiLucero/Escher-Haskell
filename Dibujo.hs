@@ -7,8 +7,8 @@ data Dibujo a =  Basica a
                | Rotar (Dibujo a) 
                | Espejar (Dibujo a) 
                | Rot45 (Dibujo a)
-               | Apilar Int Int (Dibujo a) (Dibujo a)
-               | Juntar Int Int (Dibujo a) (Dibujo a)
+               | Apilar Float Float (Dibujo a) (Dibujo a)
+               | Juntar Float Float (Dibujo a) (Dibujo a)
                | Encimar (Dibujo a) (Dibujo a)
 
 

@@ -67,6 +67,7 @@ transf f d (xs,ys) a b c  = translate (fst a') (snd a') .
 sumarvec :: Vector -> Vector -> Vector
 sumarvec (a,b) (x,y) = (a+x, b+y)
 
+
 --Def resta de vectores
 resvec :: Vector -> Vector -> Vector
 resvec (a,b) (x,y) = (a-x, b-y)
@@ -89,7 +90,7 @@ rotar :: FloatingPic -> FloatingPic
 rotar p a b c = p (sumarvec a b) c (multvec (-1) b)
 
 --Espejar ya lo tenemos como construcor 
-espejar :: FloatingPic -> FloatingPics
+espejar :: FloatingPic -> FloatingPic
 espejar p a b c = p (sumarvec a b) (multvec (-1) b) c
 
 --Rot45 ya lo tenemos como constructor
@@ -110,6 +111,16 @@ encimar :: FloatingPic -> FloatingPic -> FloatingPic
 encimar p r a b c = pictures [p a b c, r b b c]
 
 
+
+apilar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
+apilar n m p q a b c = pictures[p (sumarvec a c') b (multvec r c), q a b c']
+  where r' = n/(n+m)
+        r = m/(n+m)
+        c' = multvec r' c
+
+--Apilar (n, m, p, q) (a, b, c) = p(a + c', b, r*c) U q(a, b, c') donde
+ --                                   r' = n/n+m, r =m/n+m, c'=r' * c
+
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
 interp f (Basica a) = f ()
@@ -117,7 +128,7 @@ interp f (Rotar d) = rotar $ interp f d
 interp f (Espejar d) = espejar $ interp f d
 interp f (Rot45 d) = rot45 $ interp f d
 interp f (Encimar d h) = encimar (interp f d) (interp f h)
---interp f (Apilar d) = apilar $ interp f d
+interp f (Apilar n m d h) = apilar n m (interp f d) (interp f h)
 
 
 
