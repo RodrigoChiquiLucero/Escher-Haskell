@@ -40,7 +40,7 @@ trianD a b c = line $ map (a V.+) [c, half b , b V.+ c , c]
 rectan :: FloatingPic
 rectan a b c = line [a, a V.+ b, a V.+ b V.+ c, a V.+ c,a]
 
-simple :: Picture -> FloatingPic
+simple :: PictOutputure -> FloatingPic
 simple p _ _ _ = p
 
 fShape :: FloatingPic
@@ -100,7 +100,7 @@ rot45 p a b c = p (sumarvec a (divvec 2 (sumarvec b c))) (divvec 2 (sumarvec b c
 --encimar :: FloatingPic  -> (Vector -> Vector -> Vector -> Picture) -> FloatingPic
 --preguntar porque rayos machea
 encimar :: FloatingPic -> FloatingPic -> FloatingPic
-encimar p r a b c = pictures [p a b c, r b b c]
+encimar p r a b c = pictures [p a b c, r a b c]
 
 
 apilar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
@@ -122,6 +122,14 @@ comp f n = if n > 0 then f . comp f (n-1) else f
 
 r180 :: FloatingPic -> FloatingPic
 r180 x = (comp rotar 1) x
+
+cuarteto :: FloatingPic -> FloatingPic
+cuarteto x = apilar 1 1 (juntar 1 1 x x) (juntar 1 1 x x)
+
+encimar4 :: FloatingPic -> FloatingPic
+encimar4 x = encimar (rotar x) (encimar ((comp (rotar) 1) x) (encimar ((comp (rotar) 2) x) ((comp (rotar) 3) x)))
+
+
 
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
 interp :: Output () -> Output (Dibujo ())
