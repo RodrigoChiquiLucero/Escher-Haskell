@@ -123,8 +123,8 @@ comp f n = if n > 0 then f . comp f (n-1) else f
 r180 :: FloatingPic -> FloatingPic
 r180 x = (comp rotar 1) x
 
-cuarteto :: FloatingPic -> FloatingPic
-cuarteto x = apilar 1 1 (juntar 1 1 x x) (juntar 1 1 x x)
+cuarteto :: FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic
+cuarteto x y z w = apilar 1 1 (juntar 1 1 x y) (juntar 1 1 z w)
 
 encimar4 :: FloatingPic -> FloatingPic
 encimar4 x = encimar (rotar x) (encimar ((comp (rotar) 1) x) (encimar ((comp (rotar) 2) x) ((comp (rotar) 3) x)))
