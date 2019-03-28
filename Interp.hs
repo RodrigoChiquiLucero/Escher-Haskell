@@ -120,15 +120,34 @@ juntar n m p q a b c = pictures[p a b' c, q (sumarvec a b') (multvec r' b) c]
 comp :: (a -> a) -> Int -> (a -> a)
 comp f n = if n > 0 then f . comp f (n-1) else f
 
+r90 :: FloatingPic -> FloatingPic
+r90 x = (comp rotar 0) x
+
 r180 :: FloatingPic -> FloatingPic
 r180 x = (comp rotar 1) x
 
+r270 :: FloatingPic -> FloatingPic
+r270 x = (comp rotar 2) x
+-- Pone una figura sobre la otra, ambas ocupan el mismo espacio
+figSobreOtra :: FloatingPic -> FloatingPic -> FloatingPic
+figSobreOtra x y = apilar 1 1 x y
+
+-- Pone una figura al lado de la otra, ambas ocupan el mismo espacio
+figAlLado :: FloatingPic -> FloatingPic -> FloatingPic
+figAlLado x y = juntar 1 1 x y
+
+-- Superpone una figura con otra
+superponeDosFig :: FloatingPic -> FloatingPic -> FloatingPic
+superponeDosFig x y = encimar x y
+
 cuarteto :: FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic
-cuarteto x y z w = apilar 1 1 (juntar 1 1 x y) (juntar 1 1 z w)
+cuarteto x y z w = figSobreOtra (figAlLado x y) (figAlLado z w)
 
 encimar4 :: FloatingPic -> FloatingPic
-encimar4 x = encimar (rotar x) (encimar ((comp (rotar) 1) x) (encimar ((comp (rotar) 2) x) ((comp (rotar) 3) x)))
+encimar4 x = encimar (x) (encimar (r90 x) (encimar (r180 x) (r270 x)))
 
+ciclar :: FloatingPic -> FloatingPic
+ciclar x = cuarteto x (r90 x) (r180 x) (r270 x)
 
 
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
