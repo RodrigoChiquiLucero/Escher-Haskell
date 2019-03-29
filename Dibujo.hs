@@ -16,10 +16,11 @@ pureDibe :: a -> Dibujo a
 pureDibe x = Basica x
 
 r180 :: Dibujo a -> Dibujo a
-r180 x = Rotar (Rotar x)
+r180 x = comp Rotar 1 x
 
-r270 :: FloatingPic -> FloatingPic
-r270 x = (comp rotar 2) x
+r270 :: Dibujo a -> Dibujo a
+r270 x = comp Rotar 2 x
+
 
 {-
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio

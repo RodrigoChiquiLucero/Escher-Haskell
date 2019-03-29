@@ -4,8 +4,8 @@ import Interp
 
 --data Bas = T1 | T2
 ejemplo :: Dibujo ()
-ejemplo = r180 $ pureDibe ()
-
+--ejemplo = r180 $ pureDibe ()
+ejemplo = r270 $ pureDibe ()
 
 --let empty = Basica ()
 interpBas :: Output ()
