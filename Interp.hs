@@ -119,8 +119,8 @@ juntar n m p q a b c = pictures[p a b' c, q (sumarvec a b') (multvec r' b) c]
 
 
 --inter :: (() -> (Vector -> Vector -> Vector -> Picture)) -> ((Dibujo ()) -> (Vector -> Vector -> Vector -> Picture)))
-interp :: Output () -> Output (Dibujo ())
-interp f (Basica a) = f ()
+interp :: Output a -> Output (Dibujo a)
+interp f (Basica a) = f a
 interp f (Rotar d) = rotar $ interp f d
 interp f (Espejar d) = espejar $ interp f d
 interp f (Rot45 d) = rot45 $ interp f d
