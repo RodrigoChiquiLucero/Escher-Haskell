@@ -2,14 +2,15 @@ module Basico.Ejemplo where
 import Dibujo
 import Interp
 
---data Bas = T1 | T2
-ejemplo :: Dibujo ()
---ejemplo = r180 $ pureDibe ()
-ejemplo = r270 $ pureDibe ()
 
+ejemplo :: Dibujo ()
+ejemplo = r180 $ pureDibe ()
+--ejemplo = r270 $ pureDibe ()
+--ejemplo = figSobreOtra $ pureDibe()
 --let empty = Basica ()
-interpBas :: Output ()
+interpBas  :: Output () 
 interpBas () = trian1
+--interpBas () = fShape
 --interpBas () = juntar 3 3 rectan trian1
 --interpBas () = apilar 1 1 fShape trian1
 --interpBas () = encimar fShape trian1

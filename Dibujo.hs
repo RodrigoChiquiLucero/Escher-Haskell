@@ -21,29 +21,23 @@ r180 x = comp Rotar 1 x
 r270 :: Dibujo a -> Dibujo a
 r270 x = comp Rotar 2 x
 
+figSobreOtra :: Dibujo a -> Dibujo a -> Dibujo a
+figSobreOtra x y = Apilar 1 1 x y
 
-{-
--- Pone una figura sobre la otra, ambas ocupan el mismo espacio
-figSobreOtra :: FloatingPic -> FloatingPic -> FloatingPic
-figSobreOtra x y = apilar 1 1 x y
+encimar4 :: Dibujo a -> Dibujo a
+encimar4 x = Encimar (x) (Encimar (Rotar x) (Encimar (r180 x) (r270 x)))
 
--- Pone una figura al lado de la otra, ambas ocupan el mismo espacio
-figAlLado :: FloatingPic -> FloatingPic -> FloatingPic
-figAlLado x y = juntar 1 1 x y
+figAlLado :: Dibujo a -> Dibujo a -> Dibujo a
+figAlLado x y = Juntar 1 1 x y
 
--- Superpone una figura con otra
-superponeDosFig :: FloatingPic -> FloatingPic -> FloatingPic
-superponeDosFig x y = encimar x y
+superponeDosFig :: Dibujo a -> Dibujo a -> Dibujo a
+superponeDosFig x y = Encimar x y
 
-cuarteto :: FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic -> FloatingPic
+cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
 cuarteto x y z w = figSobreOtra (figAlLado x y) (figAlLado z w)
 
-encimar4 :: FloatingPic -> FloatingPic
-encimar4 x = encimar (x) (encimar (r90 x) (encimar (r180 x) (r270 x)))
-
-ciclar :: FloatingPic -> FloatingPic
-ciclar x = cuarteto x (r90 x) (r180 x) (r270 x)
--}
+ciclar :: Dibujo a -> Dibujo a
+ciclar x = cuarteto x (Rotar x) (r180 x) (r270 x)
 
 mapDib :: (a -> b) -> Dibujo a -> Dibujo b
 mapDib f (Basica x) = Basica (f x)
@@ -53,9 +47,6 @@ mapDib f (Rot45 d) = Rot45 $ mapDib f d
 mapDib f (Encimar d h) = Encimar (mapDib f d) (mapDib f h)
 mapDib f (Apilar n m d h) = Apilar n m (mapDib f d) (mapDib f h)
 mapDib f (Juntar n m d h) = Juntar n m (mapDib f d) (mapDib f h)
-
-
-
 
 
 {-ESTO ES SEM
@@ -76,11 +67,6 @@ ACA ES PARA INVOCAR A LA FUNCION (COMO EN C, PARA QUE SE EJECUTE)
 													 (Encimar d1 d2) = enc (sem d1) (sem d2)	
 
 -}
-
-
-
-
-
 
 -- composición n-veces de una función con sí misma.
 --comp :: (a -> a) -> Int -> a -> a
