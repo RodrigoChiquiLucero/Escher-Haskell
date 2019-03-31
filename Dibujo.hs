@@ -73,6 +73,18 @@ sem bas rotar espejar rot45 apilar juntar encimar (Apilar n m d0 d1) = apilar n 
 sem bas rotar espejar rot45 apilar juntar encimar (Juntar n m d0 d1) = juntar n m (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
 
 
+cambia :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
+cambia f (Basica d) = f d
+cambia f (Rotar d) = Rotar $ cambia f d
+cambia f (Espejar d) = Espejar $ cambia f d
+cambia f (Rot45 d) = Rot45 $ cambia f d
+cambia f (Apilar n m d0 d1) = Apilar n m (cambia f d0) (cambia f d1)
+cambia f (Juntar n m d0 d1) = Juntar n m (cambia f d0) (cambia f d1)
+cambia f (Encimar d0 d1) = Encimar (cambia f d0) (cambia f d1)
+
+
+type Pred a = a -> Bool
+
 {-ESTO ES SEM
 
 ACA ESTAMOS DEFINIENDO LA FUNCION
