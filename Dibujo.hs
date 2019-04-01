@@ -90,6 +90,36 @@ sem bas rotar espejar rot45 apilar juntar encimar (Juntar n m d0 d1) = juntar n 
 
 type Pred a = a -> Bool
 
+instance Eq Bas where  
+    T1 == T1 = True  
+    T2 == T2 = True  
+    R == R = True  
+    F == F = True  
+    TD == TD = True  
+    _ == _ = False  
+
+limpia :: Eq a => a -> a -> Dibujo a -> Dibujo a
+limpia f a (Basica d) = if f == d then (Basica a) else (Basica d)
+limpia f a (Rotar d) = Rotar $ limpia f a d
+limpia f a (Espejar d) = Espejar $ limpia f a d
+limpia f a (Rot45 d) = Rot45 $ limpia f a d
+limpia f a (Apilar n m d0 d1) = Apilar n m (limpia f a d0) (limpia f a d1)
+limpia f a (Juntar n m d0 d1) = Juntar n m (limpia f a d0) (limpia f a d1)
+limpia f a (Encimar d0 d1) = Encimar (limpia f a d0) (limpia f a d1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {-ESTO ES SEM
 
 ACA ESTAMOS DEFINIENDO LA FUNCION
