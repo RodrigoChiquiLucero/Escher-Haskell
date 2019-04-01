@@ -8,6 +8,10 @@ data Dibujo a =  Basica a
                | Juntar Float Float (Dibujo a) (Dibujo a)
                | Encimar (Dibujo a) (Dibujo a)
 
+data Bas = T1 | T2 | TD | F | R
+
+f :: Bas -> Bas
+f x = T1
 
 comp :: (a -> a) -> Int -> (a -> a)
 comp f n = if n > 0 then f . comp f (n-1) else f
@@ -58,6 +62,10 @@ mapDib f (Encimar d h) = Encimar (mapDib f d) (mapDib f h)
 mapDib f (Apilar n m d h) = Apilar n m (mapDib f d) (mapDib f h)
 mapDib f (Juntar n m d h) = Juntar n m (mapDib f d) (mapDib f h)
 
+cambia :: (a -> a) -> Dibujo a -> Dibujo a
+cambia f x = mapDib f x
+
+
 
 sem :: (a -> b) -> (b -> b) -> (b -> b) -> (b -> b) ->
        (Float -> Float -> b -> b -> b) -> 
@@ -72,7 +80,7 @@ sem bas rotar espejar rot45 apilar juntar encimar (Encimar d0 d1) = encimar (sem
 sem bas rotar espejar rot45 apilar juntar encimar (Apilar n m d0 d1) = apilar n m (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
 sem bas rotar espejar rot45 apilar juntar encimar (Juntar n m d0 d1) = juntar n m (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
 
-
+{-
 cambia :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
 cambia f (Basica d) = f d
 cambia f (Rotar d) = Rotar $ cambia f d
@@ -81,7 +89,7 @@ cambia f (Rot45 d) = Rot45 $ cambia f d
 cambia f (Apilar n m d0 d1) = Apilar n m (cambia f d0) (cambia f d1)
 cambia f (Juntar n m d0 d1) = Juntar n m (cambia f d0) (cambia f d1)
 cambia f (Encimar d0 d1) = Encimar (cambia f d0) (cambia f d1)
-
+-}
 
 type Pred a = a -> Bool
 
