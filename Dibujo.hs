@@ -98,10 +98,10 @@ instance Eq Bas where
     _ == _ = False  
 
 g :: Bas -> Bool
-g a = a == T1    
+g a = a == T1
 
-limpia :: Eq a => a -> a -> Dibujo a -> Dibujo a
-limpia f a (Basica d) = if f == d then (Basica a) else (Basica d)
+limpia :: Pred a -> a -> Dibujo a -> Dibujo a
+limpia f a (Basica d) = if f d then (Basica a) else (Basica d)
 limpia f a (Rotar d) = Rotar $ limpia f a d
 limpia f a (Espejar d) = Espejar $ limpia f a d
 limpia f a (Rot45 d) = Rot45 $ limpia f a d
