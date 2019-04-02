@@ -109,9 +109,16 @@ limpia f a (Apilar n m d0 d1) = Apilar n m (limpia f a d0) (limpia f a d1)
 limpia f a (Juntar n m d0 d1) = Juntar n m (limpia f a d0) (limpia f a d1)
 limpia f a (Encimar d0 d1) = Encimar (limpia f a d0) (limpia f a d1)
 
--- alguna básica satisface el predicado
-anyDib :: Eq a => a -> Dibujo a -> Bool
-anyDib f (Basica d) = if f == d then True else False
+
+-------Estos ejemplos se corren en ghci Main.hs------
+
+
+{- alguna básica satisface el predicado
+allDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
+True
+-}
+anyDib :: Pred a -> Dibujo a -> Bool
+anyDib f (Basica d) = if f d then True else False
 anyDib f (Rotar d) = anyDib f d
 anyDib f (Espejar d) = anyDib f d
 anyDib f (Rot45 d) = anyDib f d
@@ -119,12 +126,13 @@ anyDib f (Apilar n m d0 d1) = (anyDib f d0)|| (anyDib f d1)
 anyDib f (Juntar n m d0 d1) = (anyDib f d0) || (anyDib f d1)
 anyDib f (Encimar d0 d1) = (anyDib f d0) || (anyDib f d1)
 
+
 {-todas las básicas satisfacen el predicado
-allDib  R (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
+allDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
 False
 -}
-allDib :: Eq a => a -> Dibujo a -> Bool
-allDib f (Basica d) = if f == d then True else False
+allDib :: Pred a -> Dibujo a -> Bool
+allDib f (Basica d) = if f d then True else False
 allDib f (Rotar d) = allDib f d
 allDib f (Espejar d) = allDib f d
 allDib f (Rot45 d) = allDib f d
