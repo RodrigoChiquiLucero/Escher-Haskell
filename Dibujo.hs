@@ -8,7 +8,7 @@ data Dibujo a =  Basica a
                | Juntar Float Float (Dibujo a) (Dibujo a)
                | Encimar (Dibujo a) (Dibujo a)
 
-data Bas = T1 | T2 | TD | F | R
+data Bas = T1 | T2 | TD | F | R deriving Show
 
 f :: a -> Dibujo Bas
 f x = Basica R
@@ -153,3 +153,16 @@ every (Rot45 d) = every d
 every (Apilar n m d0 d1) = (every d0) ++ (every d1)
 every (Juntar n m d0 d1) = (every d0) ++ (every d1)
 every (Encimar d0 d1) = (every d0) ++ (every d1)
+
+--Funcion adicional: cuenta veces que aparece cada elem de una xs.
+vecesAparece :: Eq a => [a] -> [(a, Int)]
+vecesAparece [] = []
+vecesAparece (x:xs) = (x, length(filter (== x) xs) + 1) : vecesAparece (filter (/= x) xs)
+
+{- cuenta la cantidad de veces que aparecen las básicas en una figura.
+contar  (cuarteto (pureDibe R) (pureDibe R) (pureDibe R) (r180 (pureDibe T1)))
+[(R,3),(T1,1)]
+-}
+
+contar :: Eq a => Dibujo a -> [(a,Int)]
+contar x = vecesAparece (every x)
