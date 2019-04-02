@@ -133,30 +133,15 @@ allDib f (Juntar n m d0 d1) = (allDib f d0) && (allDib f d1)
 allDib f (Encimar d0 d1) = (allDib f d0) && (allDib f d1)
 
 
-
-
-
-
-
-
-
-
-
-{-ESTO ES SEM
-
-ACA ESTAMOS DEFINIENDO LA FUNCION
---a -> b    basica
---b -> b    rotar; espejar;rot45
--- (Int -> Int -> b -> b -> b)  APILAR
--- (Int -> Int -> b -> b -> b) JUNTAR 
--- (b -> b -> b) -> ENCIMAR 
---Dibujo a -> b    d
-
-
-
-ACA ES PARA INVOCAR A LA FUNCION (COMO EN C, PARA QUE SE EJECUTE)
---sem bas rotar espejar rot45 apilar juntar encimar (Basica a) = bas a
-													 (Rotar d) = rotar sem d
-													 (Encimar d1 d2) = enc (sem d1) (sem d2)	
-
+{-junta todas las figuras básicas de un dibujo
+--every (cuarteto (pureDibe R) (pureDibe R) (pureDibe R) (r180 (pureDibe T1)))
+--[R,R,R,T1]
 -}
+every :: Dibujo a -> [a]
+every (Basica a) = [a]
+every (Rotar d) = every d
+every (Espejar d) = every d
+every (Rot45 d) = every d
+every (Apilar n m d0 d1) = (every d0) ++ (every d1)
+every (Juntar n m d0 d1) = (every d0) ++ (every d1)
+every (Encimar d0 d1) = (every d0) ++ (every d1)
