@@ -10,8 +10,6 @@ data Dibujo a =  Basica a
 
 data Bas = T1 | T2 | TD | F | R deriving Show
 
-f :: a -> Dibujo Bas
-f x = Basica R
 
 comp :: (a -> a) -> Int -> (a -> a)
 comp f n = if n > 0 then f . comp f (n-1) else f
@@ -52,6 +50,7 @@ ciclar x = cuarteto x (Rotar x) (r180 x) (r270 x)
 pureDibe :: a -> Dibujo a
 pureDibe x = Basica x
 
+
 -- map para nuestro lenguaje
 mapDib :: (a -> b) -> Dibujo a -> Dibujo b
 mapDib f (Basica x) = Basica (f x)
@@ -62,19 +61,22 @@ mapDib f (Encimar d h) = Encimar (mapDib f d) (mapDib f h)
 mapDib f (Apilar n m d h) = Apilar n m (mapDib f d) (mapDib f h)
 mapDib f (Juntar n m d h) = Juntar n m (mapDib f d) (mapDib f h)
 
---cambia :: (a -> a) -> Dibujo a -> Dibujo a
---cambia f x = mapDib f x
+--Funcion para aplicar en cambia
+f :: a -> Bas
+f x = T1
 
-cambia :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-cambia f (Basica d) = f d
+--Le cambiamos el tipo a cambia porque no puede machear b con Dibujo b
+cambia :: (a -> a) -> Dibujo a -> Dibujo a
+cambia f x = mapDib f x
+{-f d
 cambia f (Rotar d) = Rotar $ cambia f d
 cambia f (Espejar d) = Espejar $ cambia f d
 cambia f (Rot45 d) = Rot45 $ cambia f d
+cambia f (Encimar d0 d1) = Encimar (cambia f d0) (cambia f d1)
 cambia f (Apilar n m d0 d1) = Apilar n m (cambia f d0) (cambia f d1)
 cambia f (Juntar n m d0 d1) = Juntar n m (cambia f d0) (cambia f d1)
-cambia f (Encimar d0 d1) = Encimar (cambia f d0) (cambia f d1)
 
-
+-}
 
 sem :: (a -> b) -> (b -> b) -> (b -> b) -> (b -> b) -> (Float -> Float -> b -> b -> b) -> 
        (Float -> Float -> b -> b -> b) -> (b -> b -> b) -> Dibujo a -> b
@@ -118,7 +120,7 @@ allDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
 True
 -}
 anyDib :: Pred a -> Dibujo a -> Bool
-anyDib f (Basica d) = if f d then True else False
+anyDib f (Basica d) = f d
 anyDib f (Rotar d) = anyDib f d
 anyDib f (Espejar d) = anyDib f d
 anyDib f (Rot45 d) = anyDib f d
@@ -132,7 +134,7 @@ allDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
 False
 -}
 allDib :: Pred a -> Dibujo a -> Bool
-allDib f (Basica d) = if f d then True else False
+allDib f (Basica d) = f d 
 allDib f (Rotar d) = allDib f d
 allDib f (Espejar d) = allDib f d
 allDib f (Rot45 d) = allDib f d
@@ -140,6 +142,27 @@ allDib f (Apilar n m d0 d1) = (allDib f d0) && (allDib f d1)
 allDib f (Juntar n m d0 d1) = (allDib f d0) && (allDib f d1)
 allDib f (Encimar d0 d1) = (allDib f d0) && (allDib f d1)
 
+
+basic_to_string :: Bas -> String
+basic_to_string T1 = " Trian1 " 
+basic_to_string T2 = " Trian2 "
+basic_to_string TD = " TrianD "
+basic_to_string R = " Rectang "
+basic_to_string F = " FShape "
+  
+-- describe la figura. Ejemplos: 
+--   desc (Basica b) (const "b") = "b"
+--   desc (Rotar fa) db = "rot (" ++ desc fa db ++ ")"
+-- la descripción de cada constructor son sus tres primeros
+-- símbolos en minúscula.
+desc :: (a -> String) -> Dibujo a -> String
+desc f (Basica a) = f a 
+desc f (Rotar d) = "rot (" ++ desc f d ++ ")"
+desc f (Espejar d) = "esp (" ++ desc f d ++ ")"
+desc f (Rot45 d) = "rot45 (" ++ desc f d ++ ")"
+desc f (Apilar n m d0 d1) = "api ("++"(" ++ desc f d0 ++ ")" ++ "(" ++ desc f d1 ++ ")" ++ ")"
+desc f (Juntar n m d0 d1) = "jun ("++"(" ++ desc f d0 ++ ")" ++ "(" ++ desc f d1 ++ ")" ++ ")"
+desc f (Encimar d0 d1) = "enc (" ++ "(" ++ desc f d0 ++ ")" ++ "(" ++ desc f d1 ++ ")" ++ ")"
 
 {-junta todas las figuras básicas de un dibujo
 --every (cuarteto (pureDibe R) (pureDibe R) (pureDibe R) (r180 (pureDibe T1)))

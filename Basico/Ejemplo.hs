@@ -12,8 +12,8 @@ ejemplo :: Dibujo Bas
 --ejemplo = superponeDosFig (pureDibe F) (pureDibe TD)
 --ejemplo = cuarteto (r180(pureDibe F)) (pureDibe TD) (pureDibe F) (pureDibe TD)
 --ejemplo = ciclar (pureDibe F)
---ejemplo = cambia f (cuarteto (r180(pureDibe F)) (pureDibe TD) (pureDibe F) (pureDibe TD))
-ejemplo = limpia g F (cuarteto (pureDibe T1) (pureDibe TD) (pureDibe F) (pureDibe TD))
+ejemplo = cambia f (cuarteto (r180(pureDibe F)) (pureDibe TD) (pureDibe F) (pureDibe TD))
+--ejemplo = limpia g F (cuarteto (pureDibe T1) (pureDibe TD) (pureDibe F) (pureDibe TD))
 
 interpBas :: Output Bas
 interpBas T1 = trian1 
