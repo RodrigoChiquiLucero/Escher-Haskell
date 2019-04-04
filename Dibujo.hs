@@ -189,3 +189,43 @@ contar  (cuarteto (pureDibe R) (pureDibe R) (pureDibe R) (r180 (pureDibe T1)))
 
 contar :: Eq a => Dibujo a -> [(a,Int)]
 contar x = vecesAparece (every x)
+
+
+{-
+Hay 4 rotaciones seguidas (empezando en el tope):
+
+esRot360 (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1)))))) (Basica T1))
+False
+
+esRot360 ((Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1)))))) (Basica T1))
+True
+-}
+esRot360 :: Pred (Dibujo a)
+esRot360 (Basica a) = False
+esRot360 (Rotar (Rotar (Rotar (Rotar d)))) = True
+esRot360 (Rotar d) = esRot360 d
+esRot360 (Espejar d) = esRot360 d
+esRot360 (Rot45 d) = esRot360 d
+esRot360 (Encimar d0 d1) = esRot360 d0 || esRot360 d1
+esRot360 (Apilar n m d0 d1) = esRot360 d0 || esRot360 d1
+esRot360 (Juntar n m d0 d1) = esRot360 d0 || esRot360 d1
+
+
+{-
+Hay 2 espejados seguidos (empezando en el tope):
+
+esFlip2 (Juntar 1 1 (Espejar(Espejar (Basica T1))) (Basica T1))
+True
+
+esFlip2 (Juntar 1 1 (Espejar(Espejar (Rotar (Basica T1)))) (Basica T1))
+True
+-}
+esFlip2 :: Pred (Dibujo a)
+esFlip2 (Basica a) = False
+esFlip2 (Rotar d) = esFlip2 d
+esFlip2 (Espejar (Espejar d)) = True
+esFlip2 (Espejar d) = esFlip2 d
+esFlip2 (Rot45 d) = esFlip2 d
+esFlip2 (Encimar d0 d1) = esFlip2 d0 || esFlip2 d1
+esFlip2 (Apilar n m d0 d1) = esFlip2 d0 || esFlip2 d1
+esFlip2 (Juntar n m d0 d1) = esFlip2 d0 || esFlip2 d1
