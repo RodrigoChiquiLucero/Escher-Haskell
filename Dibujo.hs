@@ -14,6 +14,8 @@ data Bas = T1 | T2 | TD | F | R deriving Show
 comp :: (a -> a) -> Int -> (a -> a)
 comp f n = if n > 0 then f . comp f (n-1) else f
 
+r90 :: Dibujo a -> Dibujo a
+r90 x = Rotar x
 
 r180 :: Dibujo a -> Dibujo a
 r180 x = comp Rotar 1 x
@@ -23,7 +25,7 @@ r270 x = comp Rotar 2 x
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio
 figSobreOtra :: Dibujo a -> Dibujo a -> Dibujo a
-figSobreOtra x y = Apilar 1 1 x y
+figSobreOtra x y = Apilar 5 5 x y
 
 -- una figura repetida con las cuatro rotaciones, superimpuestas.
 encimar4 :: Dibujo a -> Dibujo a
