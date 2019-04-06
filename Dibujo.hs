@@ -25,7 +25,7 @@ r270 x = comp Rotar 2 x
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio
 figSobreOtra :: Dibujo a -> Dibujo a -> Dibujo a
-figSobreOtra x y = Apilar 5 5 x y
+figSobreOtra x y = Apilar 1 1 x y
 
 -- una figura repetida con las cuatro rotaciones, superimpuestas.
 encimar4 :: Dibujo a -> Dibujo a

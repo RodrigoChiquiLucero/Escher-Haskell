@@ -22,13 +22,60 @@ a = T2
 t :: Dibujo Bas
 t = (encimar4 (pureDibe a))
 
+qqq :: Dibujo Bas
+qqq = superponeDosFig (pureDibe a) (superponeDosFig (Rot45 (pureDibe a)) (r180 (pureDibe a)))
+
+yyy :: Dibujo Bas
+yyy = Rotar qqq
+
+ttt :: Dibujo Bas
+ttt = Rotar yyy
+
+www :: Dibujo Bas
+www = Rotar ttt
+
+infX :: Dibujo Bas
+infX = Juntar 333 667 (Apilar 333 666 t (Juntar 1665 1665 (ttt) (www))) (Apilar 666 333 qqq (Apilar 333 333 www t))
+
+supR :: Dibujo Bas
+supR = Rotar infX
+
+supP :: Dibujo Bas
+supP = Rotar supR
+
+infS :: Dibujo Bas
+infS = Rotar supP
+
+{-medQ :: Dibujo Bas
+medQ = Apilar 3.33 (Juntar 7.5 2.5 yyy (Juntar 5 2.5 qqq (Juntar 2.5 2.5 yyy qqq))) (Juntar 1 1 yyy qqq)
+
+medS :: Dibujo Bas
+medS = Rotar medQ
+
+medW :: Dibujo Bas
+medW = Rotar medS
+
+medU :: Dibujo Bas
+medU = Rotar medW
+-}
+ejemplo = infS
+
+
+
+
+
+
+
+{-
+
+
 --Este es el 3
 u :: Dibujo Bas
 u = figSobreOtra (superponeDosFig (pureDibe a) (superponeDosFig (Rot45 (pureDibe a)) (r180 (pureDibe a)))) (r270(superponeDosFig (pureDibe a) (superponeDosFig (Rot45 (pureDibe a)) (r180 (pureDibe a)))))
 
 --Este es el el T chiquito abajo y el 3 grande arriba
 c :: Dibujo Bas
-c = Apilar 3 7 u t
+c = Apilar 1 3 u t
 
 --Este es el 3 rotado, va abajo
 h :: Dibujo Bas
@@ -36,11 +83,11 @@ h = r270 u
 
 --Este es el T grande arriba y el 3 abajo
 d :: Dibujo Bas
-d = Apilar 3 7 t h
+d = Apilar 1 3 t h
 
 --Este es el X :cara_ligeramente_sonriente:
 esqInfX :: Dibujo Bas
-esqInfX = Juntar 3 7 d c
+esqInfX = Juntar 1 3 d c
 
 --Este es el V :cara_ligeramente_sonriente:
 esqInfV :: Dibujo Bas
@@ -55,7 +102,7 @@ esqSupP :: Dibujo Bas
 esqSupP = r180 esqInfX
 
 medioV :: Dibujo Bas
-medioV = Juntar 3 7 u (Apilar 1 1 u u)
+medioV = Juntar 1 3 u (Apilar 1 1 u u)
 
 medioW :: Dibujo Bas
 medioW = (r270 (medioV))
@@ -78,9 +125,7 @@ supPQR = Juntar 6 2 esqSupP (Juntar 3 5 medioQ esqSupR)
 escher :: Dibujo Bas
 escher = Apilar 6 2 supPQR (Apilar 3 5 medioSTV infVWX)
 
-ejemplo = escher
---superponeDosFig (pureDibe T2) (superponeDosFig (Rot45 (pureDibe T2)) (r180 (pureDibe T2)))
-
+-}
 interpBas :: Output Bas
 interpBas T1 = trian1 
 interpBas T2 = trian2
