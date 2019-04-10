@@ -10,7 +10,7 @@ ejemplo :: Escher
 --ejemplo = encimar4 (pureDibe T1)
 --ejemplo = figAlLado (pureDibe F) (pureDibe TD)
 --ejemplo = superponeDosFig (pureDibe F) (pureDibe TD)
---ejemplo = cuarteto (r180(pureDibe F)) (pureDibe TD) (pureDibe F) (pureDibe TD)
+--ejemplo = (cuarteto (r180(pureDibe F)) (pureDibe TD) (pureDibe F) (pureDibe TD))
 --ejemplo = ciclar (pureDibe F)
 
 ejemplo = noneto p q r s t u v w x

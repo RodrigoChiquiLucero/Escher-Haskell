@@ -1,4 +1,5 @@
 module Dibujo where
+import Data.Functor.Classes
 
 data Dibujo a =  Basica a 
                | Rotar (Dibujo a) 
@@ -7,6 +8,7 @@ data Dibujo a =  Basica a
                | Apilar Float Float (Dibujo a) (Dibujo a)
                | Juntar Float Float (Dibujo a) (Dibujo a)
                | Encimar (Dibujo a) (Dibujo a)
+               deriving Show
 
 data Bas = T1 | T2 | TD | F | R deriving Show
 
@@ -88,7 +90,7 @@ sem bas rotar espejar rot45 apilar juntar encimar (Encimar d0 d1) = encimar (sem
 sem bas rotar espejar rot45 apilar juntar encimar (Apilar n m d0 d1) = apilar n m (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
 sem bas rotar espejar rot45 apilar juntar encimar (Juntar n m d0 d1) = juntar n m (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
 
-
+ 
 type Pred a = a -> Bool
 
 instance Eq Bas where  
@@ -104,38 +106,35 @@ g a = a == T1
 
 limpia :: Pred a -> a -> Dibujo a -> Dibujo a
 limpia p a d = cambia g d 
-    where g b = if p b then (Basica a) else (Basica b)
-
-
+    where g d' = if p d' then (Basica a) else (Basica d')
 -------Estos ejemplos se corren en ghci Main.hs------
-
-
 {- alguna básica satisface el predicado
 allDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
 True
 -}
 anyDib :: Pred a -> Dibujo a -> Bool
-anyDib f (Basica d) = f d
-anyDib f (Rotar d) = anyDib f d
-anyDib f (Espejar d) = anyDib f d
-anyDib f (Rot45 d) = anyDib f d
-anyDib f (Apilar n m d0 d1) = (anyDib f d0)|| (anyDib f d1)
-anyDib f (Juntar n m d0 d1) = (anyDib f d0) || (anyDib f d1)
-anyDib f (Encimar d0 d1) = (anyDib f d0) || (anyDib f d1)
-
+anyDib f d = sem b r e r45 ap j en d
+    where b a = f a
+          r a = a
+          e a = a
+          r45 a = a
+          ap x y a b = a || b
+          j x y a b = a || b
+          en a b = a || b 
 
 {-todas las básicas satisfacen el predicado
 allDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
 False
 -}
 allDib :: Pred a -> Dibujo a -> Bool
-allDib f (Basica d) = f d 
-allDib f (Rotar d) = allDib f d
-allDib f (Espejar d) = allDib f d
-allDib f (Rot45 d) = allDib f d
-allDib f (Apilar n m d0 d1) = (allDib f d0) && (allDib f d1)
-allDib f (Juntar n m d0 d1) = (allDib f d0) && (allDib f d1)
-allDib f (Encimar d0 d1) = (allDib f d0) && (allDib f d1)
+allDib f d = sem b r e r45 ap j en d
+    where b a = f a
+          r a = a
+          e a = a
+          r45 a = a
+          ap x y a b = a && b
+          j x y a b = a && b
+          en a b = a && b 
 
 
 basic_to_string :: Bas -> String
@@ -150,27 +149,32 @@ basic_to_string F = " FShape "
 --   desc (Rotar fa) db = "rot (" ++ desc fa db ++ ")"
 -- la descripción de cada constructor son sus tres primeros
 -- símbolos en minúscula.
+--desc basic_to_string (cuarteto (pureDibe R) (pureDibe R) (pureDibe R) (r180 (pureDibe T1)))
+--"api ((junt (( Rectang )( Rectang )))(junt (( Rectang )(rot (rot ( Trian1 ))))))"
 desc :: (a -> String) -> Dibujo a -> String
-desc f (Basica a) = f a 
-desc f (Rotar d) = "rot (" ++ desc f d ++ ")"
-desc f (Espejar d) = "esp (" ++ desc f d ++ ")"
-desc f (Rot45 d) = "rot45 (" ++ desc f d ++ ")"
-desc f (Apilar n m d0 d1) = "api ("++"(" ++ desc f d0 ++ ")" ++ "(" ++ desc f d1 ++ ")" ++ ")"
-desc f (Juntar n m d0 d1) = "jun ("++"(" ++ desc f d0 ++ ")" ++ "(" ++ desc f d1 ++ ")" ++ ")"
-desc f (Encimar d0 d1) = "enc (" ++ "(" ++ desc f d0 ++ ")" ++ "(" ++ desc f d1 ++ ")" ++ ")"
+desc f d = sem b r e r45 ap j en d
+    where b a = f a
+          r a = "rot (" ++ a ++ ")"
+          e a = "esp (" ++ a ++ ")"
+          r45 a = "rot45 (" ++ a ++ ")" 
+          ap x y a b = "api ((" ++ a ++ ")" ++ "(" ++ b ++ "))"
+          j x y a b = "junt ((" ++ a ++ ")" ++ "(" ++ b ++ "))"
+          en a b = "enc ((" ++ a ++ ")" ++ "(" ++ b ++ "))"
+
 
 {-junta todas las figuras básicas de un dibujo
 --every (cuarteto (pureDibe R) (pureDibe R) (pureDibe R) (r180 (pureDibe T1)))
 --[R,R,R,T1]
 -}
 every :: Dibujo a -> [a]
-every (Basica a) = [a]
-every (Rotar d) = every d
-every (Espejar d) = every d
-every (Rot45 d) = every d
-every (Apilar n m d0 d1) = (every d0) ++ (every d1)
-every (Juntar n m d0 d1) = (every d0) ++ (every d1)
-every (Encimar d0 d1) = (every d0) ++ (every d1)
+every d = sem b r e r45 ap j en d
+    where b a = [a]
+          r a = a
+          e a = a
+          r45 a = a
+          ap x y a b = a ++ b 
+          j x y a b = a ++ b
+          en a b = a ++ b 
 
 --Funcion adicional: cuenta veces que aparece cada elem de una xs.
 vecesAparece :: Eq a => [a] -> [(a, Int)]
@@ -189,10 +193,10 @@ contar x = vecesAparece (every x)
 {-
 Hay 4 rotaciones seguidas (empezando en el tope):
 
-esRot360 (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1)))))) (Basica T1))
+esRot360 (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1))))) (Basica T1))
 False
 
-esRot360 ((Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1)))))) (Basica T1))
+esRot360 (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1))
 True
 -}
 esRot360 :: Pred (Dibujo a)
@@ -212,8 +216,8 @@ Hay 2 espejados seguidos (empezando en el tope):
 esFlip2 (Juntar 1 1 (Espejar(Espejar (Basica T1))) (Basica T1))
 True
 
-esFlip2 (Juntar 1 1 (Espejar(Espejar (Rotar (Basica T1)))) (Basica T1))
-True
+esFlip2 (Juntar 1 1 (Espejar(Basica T1)) (Basica T1))
+False
 -}
 esFlip2 :: Pred (Dibujo a)
 esFlip2 (Basica a) = False
@@ -224,3 +228,71 @@ esFlip2 (Rot45 d) = esFlip2 d
 esFlip2 (Encimar d0 d1) = esFlip2 d0 || esFlip2 d1
 esFlip2 (Apilar n m d0 d1) = esFlip2 d0 || esFlip2 d1
 esFlip2 (Juntar n m d0 d1) = esFlip2 d0 || esFlip2 d1
+
+-- la cadena que se toma como parámetro es la descripción
+-- del error.
+check :: Pred (Dibujo a) -> String -> Dibujo a -> Either String (Dibujo a)
+check p s a = if p a then Right a else Left s
+--check esRot360 "Error" (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1))))) (Basica T1)) #False
+--check esRot360 "Error" (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1)) #True
+
+--todoBien :: Dibujo a -> Either [String] (Dibujo a)
+--todoBien d = if (esLeft (check esRot360 "f" d)) then if Left ["F"] else Right d
+
+esLeft :: Either a b -> Bool
+esLeft (Left _) = True
+esLeft _ = False
+
+--x_ :: Either a b -> Either a b
+--x_ (Left x) = x
+--x_ (Right x) = x
+
+noRot360 :: Dibujo a -> Dibujo a
+noRot360 (Basica a) = Basica a
+noRot360 (Rotar (Rotar (Rotar (Rotar d)))) = d
+noRot360 (Rotar d) = Rotar (noRot360 d)
+noRot360 (Espejar d) = Espejar (noRot360 d)
+noRot360 (Rot45 d) = Rot45 (noRot360 d)
+noRot360 (Encimar d0 d1) = Encimar (noRot360 d0) (noRot360 d1)
+noRot360 (Apilar n m d0 d1) = Apilar n m (noRot360 d0) (noRot360 d1)
+noRot360 (Juntar n m d0 d1) = Juntar n m (noRot360 d0) (noRot360 d1)
+--noRot360 (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1))
+--Juntar 1.0 2.0 (Basica T1) (Basica T1)
+
+noFlip2 :: Dibujo a -> Dibujo a
+noFlip2 (Basica a) = Basica a
+noFlip2 (Espejar (Espejar d)) = d
+noFlip2 (Rotar d) = Rotar (noFlip2 d)
+noFlip2 (Espejar d) = Espejar (noFlip2 d)
+noFlip2 (Rot45 d) = Rot45 (noFlip2 d)
+noFlip2 (Encimar d0 d1) = Encimar (noFlip2 d0) (noFlip2 d1)
+noFlip2 (Apilar n m d0 d1) = Apilar n m (noFlip2 d0) (noFlip2 d1)
+noFlip2 (Juntar n m d0 d1) = Juntar n m (noFlip2 d0) (noFlip2 d1)
+--noFlip2 (Juntar 1 1 (Espejar(Espejar (Basica T1))) (Basica T1))
+--Juntar 1.0 1.0 (Basica T1) (Basica T1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
