@@ -29,7 +29,7 @@ initial cf = cf >>= \cfg ->
                   let x  = width cfg
                       y  = height cfg
                   in display win white . withGrid $ interp (basic cfg) (fig cfg) (0,0) (x,0) (0,y)
-  where withGrid p = pictures [p, color grey $ grid 10 (0,0) 100 10]
+  where withGrid p = pictures [p, color grey $ grid 10 (0,0) 0 10]
         grey = makeColorI 120 120 120 120
 
 win = InWindow "Nice Window" (200, 200) (0, 0)

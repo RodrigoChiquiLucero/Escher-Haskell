@@ -14,118 +14,69 @@ ejemplo :: Dibujo Bas
 --ejemplo = cuarteto (r180(pureDibe F)) (pureDibe TD) (pureDibe F) (pureDibe TD)
 --ejemplo = ciclar (pureDibe F)
 
---Escher--
---Este es el MedioT
 a :: Bas
 a = T2
 
 t :: Dibujo Bas
 t = (encimar4 (pureDibe a))
 
-qqq :: Dibujo Bas
+qqq :: Dibujo Bas --arriba der
 qqq = superponeDosFig (pureDibe a) (superponeDosFig (Rot45 (pureDibe a)) (r180 (pureDibe a)))
 
-yyy :: Dibujo Bas
+yyy :: Dibujo Bas --arriba izq
 yyy = Rotar qqq
 
-ttt :: Dibujo Bas
+ttt :: Dibujo Bas --abajo izq
 ttt = Rotar yyy
 
-www :: Dibujo Bas
+www :: Dibujo Bas --abajo der
 www = Rotar ttt
 
-infX :: Dibujo Bas
-infX = Juntar 333 667 (Apilar 333 666 t (Juntar 1665 1665 (ttt) (www))) (Apilar 666 333 qqq (Apilar 333 333 www t))
+hola :: Dibujo Bas
+hola = Juntar 1 1 ttt www
 
-supR :: Dibujo Bas
-supR = Rotar infX
+hola1 :: Dibujo Bas
+hola1 = Apilar 333 667 t hola
 
-supP :: Dibujo Bas
-supP = Rotar supR
+hola2 :: Dibujo Bas
+hola2 = Apilar 333 667 ttt hola
 
-infS :: Dibujo Bas
-infS = Rotar supP
+hola3 :: Dibujo Bas
+hola3 = Apilar 3.33 6.67 www hola
 
-{-medQ :: Dibujo Bas
-medQ = Apilar 3.33 (Juntar 7.5 2.5 yyy (Juntar 5 2.5 qqq (Juntar 2.5 2.5 yyy qqq))) (Juntar 1 1 yyy qqq)
+esqAbajoIzq :: Dibujo Bas
+esqAbajoIzq = Apilar 667 333 yyy (Apilar 333 333 ttt t)
 
-medS :: Dibujo Bas
-medS = Rotar medQ
+esqAbajoDer :: Dibujo Bas
+esqAbajoDer = Espejar esqAbajoIzq
 
-medW :: Dibujo Bas
-medW = Rotar medS
+abajo :: Dibujo Bas
+abajo =  Juntar 9 1 esqAbajoIzq (Juntar 7 2 hola1 (Juntar 5 2 hola2 (Juntar 3 2 hola3 (Juntar 1 2 hola1 esqAbajoDer))))
 
-medU :: Dibujo Bas
-medU = Rotar medW
--}
-ejemplo = infS
+arriba :: Dibujo Bas
+arriba = r180 abajo
 
+m1 :: Dibujo Bas
+m1 = Juntar 667 333 (Apilar 5 5 yyy ttt) ttt
 
+m3 :: Dibujo Bas
+m3 = r180 m1
 
+m2 :: Dibujo Bas
+m2 = Espejar m3
 
+m4 :: Dibujo Bas
+m4 = Espejar m1
 
-
-
-{-
-
-
---Este es el 3
-u :: Dibujo Bas
-u = figSobreOtra (superponeDosFig (pureDibe a) (superponeDosFig (Rot45 (pureDibe a)) (r180 (pureDibe a)))) (r270(superponeDosFig (pureDibe a) (superponeDosFig (Rot45 (pureDibe a)) (r180 (pureDibe a)))))
-
---Este es el el T chiquito abajo y el 3 grande arriba
-c :: Dibujo Bas
-c = Apilar 1 3 u t
-
---Este es el 3 rotado, va abajo
-h :: Dibujo Bas
-h = r270 u
-
---Este es el T grande arriba y el 3 abajo
-d :: Dibujo Bas
-d = Apilar 1 3 t h
-
---Este es el X :cara_ligeramente_sonriente:
-esqInfX :: Dibujo Bas
-esqInfX = Juntar 1 3 d c
-
---Este es el V :cara_ligeramente_sonriente:
-esqInfV :: Dibujo Bas
-esqInfV = r270 esqInfX
-
---Este es el R :cara_ligeramente_sonriente:
-esqSupR :: Dibujo Bas
-esqSupR = r90 esqInfX
-
---Este es la P :cara_ligeramente_sonriente:
-esqSupP :: Dibujo Bas
-esqSupP = r180 esqInfX
-
-medioV :: Dibujo Bas
-medioV = Juntar 1 3 u (Apilar 1 1 u u)
-
-medioW :: Dibujo Bas
-medioW = (r270 (medioV))
-
-medioS :: Dibujo Bas
-medioS = (r180 (medioV))
-
-medioQ :: Dibujo Bas
-medioQ = r90 (medioV)
-
-medioSTV :: Dibujo Bas
-medioSTV = Juntar 6 2 medioS (Juntar 3 5 t medioV)
-
-infVWX :: Dibujo Bas
-infVWX = Juntar 6 2 esqInfV (Juntar 3 5 medioW esqInfX)
-
-supPQR :: Dibujo Bas
-supPQR = Juntar 6 2 esqSupP (Juntar 3 5 medioQ esqSupR)
+medio:: Dibujo Bas
+medio = Juntar 3 7 (Juntar 4 3 (Apilar 1 1 m2 m1) t) (Apilar 1 1 m3 m4)
 
 escher :: Dibujo Bas
-escher = Apilar 6 2 supPQR (Apilar 3 5 medioSTV infVWX)
+escher = Apilar 7 3 arriba (Apilar 3 4 medio abajo) 
 
--}
+ejemplo = escher
+
+
 interpBas :: Output Bas
 interpBas T1 = trian1 
 interpBas T2 = trian2
