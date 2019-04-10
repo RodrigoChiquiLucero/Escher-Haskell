@@ -68,9 +68,8 @@ f :: a -> Bas
 f x = T1
 
 --Le cambiamos el tipo a cambia porque no puede machear b con Dibujo b
-cambia :: (a -> a) -> Dibujo a -> Dibujo a
-cambia f x = mapDib f x
-{-f d
+cambia :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
+cambia f (Basica d) = f d
 cambia f (Rotar d) = Rotar $ cambia f d
 cambia f (Espejar d) = Espejar $ cambia f d
 cambia f (Rot45 d) = Rot45 $ cambia f d
@@ -78,7 +77,6 @@ cambia f (Encimar d0 d1) = Encimar (cambia f d0) (cambia f d1)
 cambia f (Apilar n m d0 d1) = Apilar n m (cambia f d0) (cambia f d1)
 cambia f (Juntar n m d0 d1) = Juntar n m (cambia f d0) (cambia f d1)
 
--}
 
 sem :: (a -> b) -> (b -> b) -> (b -> b) -> (b -> b) -> (Float -> Float -> b -> b -> b) -> 
        (Float -> Float -> b -> b -> b) -> (b -> b -> b) -> Dibujo a -> b
@@ -105,13 +103,8 @@ g :: Bas -> Bool
 g a = a == T1
 
 limpia :: Pred a -> a -> Dibujo a -> Dibujo a
-limpia f a (Basica d) = if f d then (Basica a) else (Basica d)
-limpia f a (Rotar d) = Rotar $ limpia f a d
-limpia f a (Espejar d) = Espejar $ limpia f a d
-limpia f a (Rot45 d) = Rot45 $ limpia f a d
-limpia f a (Apilar n m d0 d1) = Apilar n m (limpia f a d0) (limpia f a d1)
-limpia f a (Juntar n m d0 d1) = Juntar n m (limpia f a d0) (limpia f a d1)
-limpia f a (Encimar d0 d1) = Encimar (limpia f a d0) (limpia f a d1)
+limpia p a d = cambia g d 
+    where g b = if p b then (Basica a) else (Basica b)
 
 
 -------Estos ejemplos se corren en ghci Main.hs------
