@@ -28,6 +28,9 @@ grid n v sep l = pictures [ls,translate 0 (l*toEnum n) (rotate 90 ls)]
   where ls = pictures $ take (n+1) $ hlines v sep l
 
 -- figuras adaptables comunes
+blanco :: FloatingPic
+blanco a b c = blank
+
 trian1 :: FloatingPic
 trian1 a b c = line $ map (a V.+) [zero, half b V.+ c , b , zero]
 

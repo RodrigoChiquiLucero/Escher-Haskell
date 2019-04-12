@@ -2,63 +2,46 @@ module Basico.Escher where
 import Dibujo
 import Interp
 
-type Escher = Dibujo Bas
+type Escher = Bas
 
-a :: Bas
-a = T2
+dibujo_u :: Dibujo Escher -> Dibujo Escher
+dibujo_u p = encimar4 p 
 
-t :: Escher
-t = (encimar4 (pureDibe a))
+dibujo_t :: Dibujo Escher -> Dibujo Escher
+dibujo_t p = superponeDosFig  p (superponeDosFig (Rot45 p) (r180 p))
 
-arribaDer :: Escher 
-arribaDer = superponeDosFig (pureDibe a) (superponeDosFig (Rot45 (pureDibe a)) (r180 (pureDibe a)))
+lado :: Int -> Dibujo Escher -> Dibujo Escher
+lado 1 p = cuarteto (pureDibe B) (pureDibe B) (dibujo_t p) (Rotar (dibujo_t p))
+lado n p = cuarteto (lado (n-1) (p)) (lado (n-1) (p)) (dibujo_t p) (Rotar (dibujo_t p)) 
 
-arribaIzq :: Escher 
-arribaIzq = Rotar arribaDer
+esquina :: Int -> Dibujo Escher -> Dibujo Escher
+esquina 1 p = cuarteto (pureDibe B) (pureDibe B) (dibujo_u p) (pureDibe B)
+esquina n p = cuarteto (esquina (n-1) p) (lado (n-1) p) (dibujo_u p) (Rotar (lado (n-1) p)) 
 
-abajoIzq :: Escher 
-abajoIzq = Rotar arribaIzq
+noneto p q r
+       s t u
+       v w x = Apilar 2 1   (Juntar 2 1 p (Juntar 1 1 q r)) 
+                            (Apilar 1 1 (Juntar 2 1 s (Juntar 1 1 t u))
+                            (Juntar 2 1 v (Juntar 1 1 w x)))
 
-abajoDer :: Escher 
-abajoDer = Rotar abajoIzq
-
-abaDerIzq :: Escher
-abaDerIzq = Juntar 1 1 abajoIzq abajoDer
-
-abaDerIzqT :: Escher
-abaDerIzqT = Apilar 333 667 t abaDerIzq
-
-abaDerIzqI :: Escher
-abaDerIzqI = Apilar 333 667 abajoIzq abaDerIzq
-
-abaDerIzqD :: Escher
-abaDerIzqD = Apilar 333 667 abajoDer abaDerIzq
-
-esqAbajoIzq :: Escher
-esqAbajoIzq = Apilar 667 333 arribaIzq (Apilar 333 333 abajoIzq t)
-
-v :: Escher
-v = Juntar 667 333 esqAbajoIzq abaDerIzqT
-
-x :: Escher
-x = Rotar v
-
-r :: Escher
-r = Rotar x
-
-p :: Escher
-p = Rotar r
-
-w :: Escher
-w = Juntar 1 1 abaDerIzqI abaDerIzqD
-
-q :: Escher
-q = Espejar (r180 w)
-
-u :: Escher
-u = Rotar w
-
-s :: Escher
-s = Espejar u
-
-noneto p q r s t u v w x =  Apilar 7 3 (Juntar 7 3 p (Juntar 3 4 q r)) (Apilar 3 4 (Juntar 7 3 s (Juntar 3 4 t u)) (Juntar 7 3 v (Juntar 3 4 w x)))
+escher :: Int -> Escher -> Dibujo Escher
+escher 1 d = noneto p q r s t u v w x
+    where p = (esquina 1 (pureDibe d))
+          q = (lado 1 (pureDibe d))
+          r = r270 p
+          s = Espejar (Rotar w)
+          t = dibujo_u (pureDibe d)
+          u = Espejar (Rotar q)
+          v = r270 x
+          w = r270 u
+          x = r270 r
+escher n d = noneto p q r s t u v w x
+    where p = (esquina n (pureDibe d))
+          q = (lado n (pureDibe d))
+          r = r270 p
+          s = Espejar (Rotar w)
+          t = dibujo_u (pureDibe d)
+          u = Espejar (Rotar q)
+          v = r270 x
+          w = r270 u
+          x = r270 r         

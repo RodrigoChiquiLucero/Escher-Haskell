@@ -13,7 +13,7 @@ data Dibujo a =  Basica a
                deriving Show
 
 
-data Bas = T1 | T2 | TD | F | R deriving Show
+data Bas = T1 | T2 | TD | F | R | B deriving Show
 
 comp :: (a -> a) -> Int -> (a -> a)
 comp f n = if n > 0 then f . comp f (n-1) else f
@@ -45,12 +45,12 @@ superponeDosFig x y = Encimar x y
 
 -- dada una figura la repite en cuatro cuadrantes
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto x y z w = figSobreOtra (figAlLado x y) (figAlLado z w)
+cuarteto x y z w = figSobreOtra (figAlLado x y) (figAlLado w z)
 
 -- cuadrado con la misma figura rotada $i$ por $90$ para $i \in \{1..3\}$.
 -- No confundir con encimar4!ciclar :: Dibujo a -> Dibujo a
 ciclar :: Dibujo a -> Dibujo a
-ciclar x = cuarteto x (Rotar x) (r180 x) (r270 x)
+ciclar x = cuarteto (Rotar x) x (r180 x) (r270 x)
 
 -- ver un a como una figura
 pureDibe :: a -> Dibujo a
@@ -230,8 +230,9 @@ esFlip2 (Juntar n m d0 d1) = esFlip2 d0 || esFlip2 d1
 check :: Pred (Dibujo a) -> String -> Dibujo a -> Either String (Dibujo a)
 check p s a = if p a then Left s else Right a
 
---check esRot360 "No cumple el Predicado" (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1))))) (Basica T1)) #False
---check esRot360 "No cumple el Predicado" (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1)) #True
+--check esRot360 "Tiene 4 rotaciones" (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1))))) (Basica T1)) #False
+--check esRot360 "Tiene 4 rotaciones" (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1)) #True
+
 --Devuelve el Dibujo si no tiene 360s o Flips dentro
 --todoBien (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Espejar (Espejar (Basica T1)))) #Te devuelve los errores
 
