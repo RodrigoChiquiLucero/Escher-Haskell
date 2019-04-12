@@ -67,9 +67,10 @@ mapDib f (Apilar n m d h) = Apilar n m (mapDib f d) (mapDib f h)
 mapDib f (Juntar n m d h) = Juntar n m (mapDib f d) (mapDib f h)
 
 --Funcion para aplicar en cambia
-f :: a -> Bas
-f x = T1
+f_cambia_a_triangulo :: a -> Dibujo Bas
+f_cambia_a_triangulo x = Basica T1
 
+--cambia f_cambia_a_triangulo (cuarteto ((pureDibe F)) (pureDibe TD) (pureDibe R) (pureDibe T2))
 --Le cambiamos el tipo a cambia porque no puede machear b con Dibujo b
 cambia :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
 cambia f (Basica d) = f d
@@ -99,9 +100,12 @@ instance Eq Bas where
     TD == TD = True  
     _ == _ = False
 
-g :: Bas -> Bool
-g a = a == T1
+--Predicado que verifica si es igual a T1
+g_verifica_igual_triangulo :: Bas -> Bool
+g_verifica_igual_triangulo a = a == T1
 
+--limpia g_verifica_igual_triangulo F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
+--Cambia las figuras por a si cumple el predicado p
 limpia :: Pred a -> a -> Dibujo a -> Dibujo a
 limpia p a d = cambia g d 
     where g d' = if p d' then (Basica a) else (Basica d')
@@ -265,29 +269,3 @@ noFlip2 (Encimar d0 d1) = Encimar (noFlip2 d0) (noFlip2 d1)
 noFlip2 (Apilar n m d0 d1) = Apilar n m (noFlip2 d0) (noFlip2 d1)
 noFlip2 (Juntar n m d0 d1) = Juntar n m (noFlip2 d0) (noFlip2 d1)
 --noFlip2 (Juntar 1 1 (Espejar(Espejar (Basica T1))) (Basica T1))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
