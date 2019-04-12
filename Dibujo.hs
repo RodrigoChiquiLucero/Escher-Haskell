@@ -15,23 +15,23 @@ data Dibujo a =  Basica a
 
 data Bas = T1 | T2 | TD | F | R | B deriving Show
 
+-- Composición n-veces de una función con sí misma.
 comp :: (a -> a) -> Int -> (a -> a)
 comp f n = if n > 0 then f . comp f (n-1) else f
 
-r90 :: Dibujo a -> Dibujo a
-r90 x = Rotar x
-
+--Rotar una figura 180 grados
 r180 :: Dibujo a -> Dibujo a
 r180 x = comp Rotar 1 x
 
+--Rotar una figura 270 grados
 r270 :: Dibujo a -> Dibujo a
 r270 x = comp Rotar 2 x
 
--- Pone una figura sobre la otra, ambas ocupan el mismo espacio
+-- Una figura sobre la otra, ambas ocupan el mismo espacio
 figSobreOtra :: Dibujo a -> Dibujo a -> Dibujo a
 figSobreOtra x y = Apilar 1 1 x y
 
--- una figura repetida con las cuatro rotaciones, superimpuestas.
+-- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
 encimar4 x = Encimar (x) (Encimar (Rotar x) (Encimar (r180 x) (r270 x)))
 
@@ -43,20 +43,19 @@ figAlLado x y = Juntar 1 1 x y
 superponeDosFig :: Dibujo a -> Dibujo a -> Dibujo a
 superponeDosFig x y = Encimar x y
 
--- dada una figura la repite en cuatro cuadrantes
+-- Dada una figura la repite en cuatro cuadrantes
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
 cuarteto x y z w = figSobreOtra (figAlLado x y) (figAlLado w z)
 
--- cuadrado con la misma figura rotada $i$ por $90$ para $i \in \{1..3\}$.
--- No confundir con encimar4!ciclar :: Dibujo a -> Dibujo a
+-- Cuadrado con la misma figura rotada $i$ por $90$ para $i \in \{1..3\}$.
 ciclar :: Dibujo a -> Dibujo a
 ciclar x = cuarteto (Rotar x) x (r180 x) (r270 x)
 
--- ver un a como una figura
+-- Ver un a como una figura
 pureDibe :: a -> Dibujo a
 pureDibe x = Basica x
 
--- map para nuestro lenguaje
+-- Map para nuestro lenguaje
 mapDib :: (a -> b) -> Dibujo a -> Dibujo b
 mapDib f (Basica x) = Basica (f x)
 mapDib f (Rotar d) = Rotar $ mapDib f d
@@ -66,12 +65,11 @@ mapDib f (Encimar d h) = Encimar (mapDib f d) (mapDib f h)
 mapDib f (Apilar n m d h) = Apilar n m (mapDib f d) (mapDib f h)
 mapDib f (Juntar n m d h) = Juntar n m (mapDib f d) (mapDib f h)
 
---Funcion para aplicar en cambia
-f_cambia_a_triangulo :: a -> Dibujo Bas
-f_cambia_a_triangulo x = Basica T1
+--Función para aplicar en cambia
+fCambia :: a -> Dibujo Bas
+fCambia x = Basica T1
 
---cambia f_cambia_a_triangulo (cuarteto ((pureDibe F)) (pureDibe TD) (pureDibe R) (pureDibe T2))
---Le cambiamos el tipo a cambia porque no puede machear b con Dibujo b
+--cambia fCambia (cuarteto ((pureDibe F)) (pureDibe TD) (pureDibe R) (pureDibe T2))
 cambia :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
 cambia f (Basica d) = f d
 cambia f (Rotar d) = Rotar $ cambia f d
@@ -101,22 +99,20 @@ instance Eq Bas where
     _ == _ = False
 
 --Predicado que verifica si es igual a T1
-g_verifica_igual_triangulo :: Bas -> Bool
-g_verifica_igual_triangulo a = a == T1
+gVerEqDib :: Bas -> Bool
+gVerEqDib a = a == T1
 
---limpia g_verifica_igual_triangulo F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
+--limpia gVerEqDib F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
 --Cambia las figuras por a si cumple el predicado p
 limpia :: Pred a -> a -> Dibujo a -> Dibujo a
 limpia p a d = cambia g d 
     where g d' = if p d' then (Basica a) else (Basica d')
 
 
--------Estos ejemplos se corren en ghci Main.hs------
 {- alguna básica satisface el predicado
-allDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
+anyDib gVerEqDib (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
 True
 -}
-
 anyDib :: Pred a -> Dibujo a -> Bool
 anyDib f d = sem b r e r45 ap j en d
     where b a = f a
@@ -157,7 +153,6 @@ basic_to_string F = " FShape "
 -- símbolos en minúscula.
 --desc basic_to_string (cuarteto (pureDibe R) (pureDibe R) (pureDibe R) (r180 (pureDibe T1)))
 --"api ((junt (( Rectang )( Rectang )))(junt (( Rectang )(rot (rot ( Trian1 ))))))"
-
 desc :: (a -> String) -> Dibujo a -> String
 desc f d = sem b r e r45 ap j en d
     where b a = f a
@@ -201,7 +196,6 @@ False
 esRot360 (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1))
 True
 -}
-
 esRot360 :: Pred (Dibujo a)
 esRot360 (Basica a) = False
 esRot360 (Rotar (Rotar (Rotar (Rotar d)))) = True
@@ -211,6 +205,7 @@ esRot360 (Rot45 d) = esRot360 d
 esRot360 (Encimar d0 d1) = esRot360 d0 || esRot360 d1
 esRot360 (Apilar n m d0 d1) = esRot360 d0 || esRot360 d1
 esRot360 (Juntar n m d0 d1) = esRot360 d0 || esRot360 d1
+
 {-
 Hay 2 espejados seguidos (empezando en el tope):
 esFlip2 (Juntar 1 1 (Espejar(Espejar (Basica T1))) (Basica T1))
@@ -218,7 +213,6 @@ True
 esFlip2 (Juntar 1 1 (Espejar(Basica T1)) (Basica T1))
 False
 -}
-
 esFlip2 :: Pred (Dibujo a)
 esFlip2 (Basica a) = False
 esFlip2 (Rotar d) = esFlip2 d
@@ -228,14 +222,13 @@ esFlip2 (Rot45 d) = esFlip2 d
 esFlip2 (Encimar d0 d1) = esFlip2 d0 || esFlip2 d1
 esFlip2 (Apilar n m d0 d1) = esFlip2 d0 || esFlip2 d1
 esFlip2 (Juntar n m d0 d1) = esFlip2 d0 || esFlip2 d1
+
 -- la cadena que se toma como parámetro es la descripción
 -- del error.
-
+-- check esRot360 "Tiene 4 rotaciones" (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1))))) (Basica T1)) #False
+-- check esRot360 "Tiene 4 rotaciones" (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1)) #True
 check :: Pred (Dibujo a) -> String -> Dibujo a -> Either String (Dibujo a)
 check p s a = if p a then Left s else Right a
-
---check esRot360 "Tiene 4 rotaciones" (Juntar 1 2  (Rotar (Rotar (Espejar (Rotar (Basica T1))))) (Basica T1)) #False
---check esRot360 "Tiene 4 rotaciones" (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Basica T1)) #True
 
 --Devuelve el Dibujo si no tiene 360s o Flips dentro
 --todoBien (Juntar 1 2  (Rotar (Rotar (Rotar (Rotar (Basica T1))))) (Espejar (Espejar (Basica T1)))) #Te devuelve los errores

@@ -1,4 +1,4 @@
-# Laboratorio 1 - Paradigmas de la programación
+# Laboratorio 1 - Paradigmas de la programación (un lenguaje que vale más que mil dibujos)
 
 Nosotros empezamos al revés de los demás grupos. Lo hicimos sin querer porque en vez de hacer todas las funciones en Dibujo.hs las hicimos en Interp.hs. O sea al data Dibujo sí lo hicimos en Dibujo.hs pero a todo el resto de las funciones no. 
 Lo que primero queríamos hacer era mostrar los dibujos. Entonces pedimos ayuda a los profes y fue ahí que cambiamos muchas cosas en interprete, en ejemplo, y solamente un poco un Main.hs para que nos imprimiera un dibujo. 
@@ -9,10 +9,39 @@ Cuando terminamos de hacer los constructores empezamos a hacer las otras funcion
 
 Entonces le preguntamos a los profes, y nos dijeron que todas estas funciones deberían ir en Dibujo.hs. Pero no teníamos idea cómo pasar todas esas funciones a que tomen Dibujo a. Pensamos bastante y nos dimos cuenta de cómo hacerlo. En realidad nuestro "problema" era que queríamos probar todo en Ejemplo.hs. Por eso hicimos el pureDib antes que nada, tuvimos que crear un data Bas para que funcione y ahí empezamos a probar todas nuestras funciones que teníamos en Dibujo.hs.
 
-Menos mal que uno de los profes explicó bien en clase lo que hacía sem y dió un ejemplo, porque estábamos muy perdido con eso. Después hacer que las otras funciones no usen pattern matching usando sem no nos fue tan complicado. 
+Menos mal que uno de los profes explicó bien en clase lo que hacía sem y dió un ejemplo, porque estábamos muy perdidos con eso. Después hacer que las otras funciones no usen pattern matching usando sem no nos fue tan complicado. 
 
-Y al final llegó el momento de Escher. No teníamos idea qué hacer, cómo empezar ni nada. Preguntamos y nos dijeron que teníamos que hacer el dibujo que aparecía en el paper de Henderson, pero el de los triángulos (porque ya nos habían dado esos dibujos). 
+---
+***Algunas aclaraciones:** como veníamos diciendo, queríamos probar cada función que hacíamos. Entonces a continuación vamos a detallar cuál es la forma en la que nosotros comprobábamos las funciones:* 
 
-Tuvimos muchos, pero **MUCHOS** problemas con este dibujo. No sabíamos como encararlo. Al principio lo encaramos de una manera, lo logramos hacer pero nos dio un dibujo como tridimensional. Y era porque algunos cuadrados que deberían ser cuadrados, eran rectángulos. Y las líneas que se "unían" no eran perfectas estaban medias curvadas. 
+ - Para compilar: **ghci Main.hs**
 
-Y después nos dimos cuenta de hacerlo de una forma y nos dio PERFECTO. Todos eran cuadrados. La magia fue que nuestros Juntar y Apilar usan números para que los acomodemos en la grilla. Los entendimos tarde cómo funcionaban. Empezamos a usarlos como si fuesen "centímetros" en la grilla. Entonces por ejemplo Juntar 4 6 ... hacía que el primer dibujo dado midiera 4 cm (o 4 cuadrados de la grilla) y lo mismo con 6 pero con el segundo dibujo dado. Entonces empezamos a pensar cada dibujo que hacíamos de esta forma. 
+	 - **cambia** :  cambia fCambia (Encimar (Rotar (Basica T1)) (Basica T1)). 
+	                           Resultado: Encimar (Rotar (Basica T1)) (Basica T1)
+		 > Donde fCambia es: 
+	         >  fCambia :: a -> Dibujo Bas
+	         >  fCambia x = (Basica T1)
+	  - **limpia** :  limpia gVerEqDib F (Encimar (Rotar (Basica T1)) (Basica T2))
+                Resultado: Encimar (Rotar (Basica F)) (Basica T2)
+           > Donde gVerEqDib es: 
+	    >  gVerEqDib :: Bas -> Bool
+	    >  gVerEqDib a = a == T1
+	   - **anyDib** : anyDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
+	   Resultado: True
+          > Donde gVerEqDib es: 
+	     >  gVerEqDib :: Bas -> Bool
+	     >  gVerEqDib a = a == T1
+	  - **allDib** : anyDib g (cuarteto (pureDibe T1) (pureDibe R) (pureDibe R) (pureDibe R))
+	   Resultado: False
+          > Donde gVerEqDib es: 
+	     >  gVerEqDib :: Bas -> Bool
+	     >  gVerEqDib a = a == T1
+
+	   - **desc** : desc desc basic_to_string (Rotar (Basica T1))
+	   Resultado: "rot ( Trian1 )"
+---
+Y al final llegó el momento de Escher. No teníamos idea qué hacer, cómo empezar ni nada. Preguntamos y nos dijeron que teníamos que hacer el dibujo que aparecía en el paper de Henderson, pero el de los triángulos (porque ya nos habían dado esos dibujos).
+
+Tuvimos muchos, pero **MUCHOS** problemas con esta parte. Habíamos entendido mal lo que tendríámos que haber hecho. Lo que hicimos fue hardcodear el dibujo para que se imprimiera, pero los profes nos dijeron que a escher le debíamos pasar un entero y el dibujo debería cambiar. Entonces nuestra forma no funcionaba. 
+
+Entonces pedimos ayuda el último día de clase, y la profe Mili nos ayudó muchísimo porque nos explicó con ejemplos cómo deberían quedar los dibujos. Por ejemplo cómo debería quedar: `escher 1 trian2`, `escher 3 trian2`. Después de pensarlo todo el día, preguntar muchísimo, sacarnos dudas del paper de Henderson y demás, salió. Era lo único que nos faltaba pero estuvimos las 4 horas del viernes haciéndolo. 
