@@ -25,16 +25,6 @@ noneto p q r
                             (Juntar 2 1 v (Juntar 1 1 w x)))
 
 escher :: Int -> Escher -> Dibujo Escher
-escher 1 d = noneto p q r s t u v w x
-    where p = (esquina 1 (pureDibe d))
-          q = (lado 1 (pureDibe d))
-          r = r270 p
-          s = Espejar (Rotar w)
-          t = dibujo_u (pureDibe d)
-          u = Espejar (Rotar q)
-          v = r270 x
-          w = r270 u
-          x = r270 r
 escher n d = noneto p q r s t u v w x
     where p = (esquina n (pureDibe d))
           q = (lado n (pureDibe d))

@@ -18,8 +18,9 @@ ejemplo :: Dibujo Bas
 --ejemplo = esquina 2 (pureDibe T2)
 --ejemplo = escher 2 T2
 --ejemplo = cambia f_cambia_a_triangulo (cuarteto ((pureDibe F)) (pureDibe TD) (pureDibe R) (pureDibe T2))
---ejemplo = limpia g_verifica_igual_triangulo F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
-ejemplo = escher 2 T1
+--ejemplo = limpia f_predicado F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
+ejemplo = escher 5 T2
+
 
 
 interpBas :: Output Bas

@@ -55,6 +55,10 @@ ciclar x = cuarteto (Rotar x) x (r180 x) (r270 x)
 pureDibe :: a -> Dibujo a
 pureDibe x = Basica x
 
+--Funcion auxiliar para aplicar en Map
+f :: a -> Bas
+f x = T1
+
 -- Map para nuestro lenguaje
 mapDib :: (a -> b) -> Dibujo a -> Dibujo b
 mapDib f (Basica x) = Basica (f x)
@@ -66,8 +70,8 @@ mapDib f (Apilar n m d h) = Apilar n m (mapDib f d) (mapDib f h)
 mapDib f (Juntar n m d h) = Juntar n m (mapDib f d) (mapDib f h)
 
 --Función para aplicar en cambia
-fCambia :: a -> Dibujo Bas
-fCambia x = Basica T1
+f_cambia_a_triangulo :: a -> Dibujo Bas
+f_cambia_a_triangulo x = Basica T1
 
 --cambia fCambia (cuarteto ((pureDibe F)) (pureDibe TD) (pureDibe R) (pureDibe T2))
 cambia :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
@@ -88,7 +92,8 @@ sem bas rotar espejar rot45 apilar juntar encimar (Rot45 d0) = rot45 (sem bas ro
 sem bas rotar espejar rot45 apilar juntar encimar (Encimar d0 d1) = encimar (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
 sem bas rotar espejar rot45 apilar juntar encimar (Apilar n m d0 d1) = apilar n m (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
 sem bas rotar espejar rot45 apilar juntar encimar (Juntar n m d0 d1) = juntar n m (sem bas rotar espejar rot45 apilar juntar encimar d0) (sem bas rotar espejar rot45 apilar juntar encimar d1)
- 
+
+--Instanciamos nuestro comparador de figuras 
 type Pred a = a -> Bool
 instance Eq Bas where  
     T1 == T1 = True  
@@ -98,15 +103,19 @@ instance Eq Bas where
     TD == TD = True  
     _ == _ = False
 
---Predicado que verifica si es igual a T1
-gVerEqDib :: Bas -> Bool
-gVerEqDib a = a == T1
+
+--Esta funcion auxiliar es nuestro predicado
+f_predicado :: Bas -> Bool
+f_predicado a = a == T1
+
 
 --limpia gVerEqDib F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
 --Cambia las figuras por a si cumple el predicado p
 limpia :: Pred a -> a -> Dibujo a -> Dibujo a
 limpia p a d = cambia g d 
     where g d' = if p d' then (Basica a) else (Basica d')
+--limpia predicado F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T1))
+
 
 
 {- alguna básica satisface el predicado
@@ -139,6 +148,7 @@ allDib f d = sem b r e r45 ap j en d
           en a b = a && b 
 
 
+--Funcion auxiliar que toma Desc
 basic_to_string :: Bas -> String
 basic_to_string T1 = " Trian1 " 
 basic_to_string T2 = " Trian2 "
@@ -262,3 +272,4 @@ noFlip2 (Encimar d0 d1) = Encimar (noFlip2 d0) (noFlip2 d1)
 noFlip2 (Apilar n m d0 d1) = Apilar n m (noFlip2 d0) (noFlip2 d1)
 noFlip2 (Juntar n m d0 d1) = Juntar n m (noFlip2 d0) (noFlip2 d1)
 --noFlip2 (Juntar 1 1 (Espejar(Espejar (Basica T1))) (Basica T1))
+
