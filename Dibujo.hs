@@ -13,7 +13,7 @@ data Dibujo a =  Basica a
                deriving Show
 
 
-data Bas = T1 | T2 | TD | F | R | B deriving Show
+data Bas = T1 | T2 | TD | F | R | B | C deriving Show
 
 -- Composición n-veces de una función con sí misma.
 comp :: (a -> a) -> Int -> (a -> a)
@@ -45,7 +45,7 @@ superponeDosFig x y = Encimar x y
 
 -- Dada una figura la repite en cuatro cuadrantes
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto x y z w = figSobreOtra (figAlLado x y) (figAlLado w z)
+cuarteto x y z w = figSobreOtra (figAlLado x y) (figAlLado z w)
 
 -- Cuadrado con la misma figura rotada $i$ por $90$ para $i \in \{1..3\}$.
 ciclar :: Dibujo a -> Dibujo a

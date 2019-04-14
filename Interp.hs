@@ -31,6 +31,20 @@ grid n v sep l = pictures [ls,translate 0 (l*toEnum n) (rotate 90 ls)]
 blanco :: FloatingPic
 blanco a b c = blank
 
+(x,y) .+ (x',y') = (x+x',y+y')
+s .* (x,y) = (s*x,s*y)
+(x,y) .- (x',y') = (x-x',y-y')
+negar (x,y) = (-x,-y)
+
+curvita :: FloatingPic
+curvita a b c = line $ bezier a (a .+ b .+((1/3) .* c)) (a .+ b .+ c) 10
+
+bezier :: Vector -> Vector -> Vector -> Int -> [Vector]
+bezier p0 p1 p2 n = [ p1 .+ (((1-t)^2) .* (p0 .+ (negar p1))) .+ ((t^2) .* (p2 .+ (negar p1))) | t <- ts]
+ where ts = 0:map (divF n) [1..n]
+       divF :: Int -> Int -> Float
+       divF j i = toEnum i / toEnum j
+
 trian1 :: FloatingPic
 trian1 a b c = line $ map (a V.+) [zero, half b V.+ c , b , zero]
 

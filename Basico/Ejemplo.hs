@@ -19,8 +19,9 @@ ejemplo :: Dibujo Bas
 --ejemplo = escher 2 T2
 --ejemplo = cambia f_cambia_a_triangulo (cuarteto ((pureDibe F)) (pureDibe TD) (pureDibe R) (pureDibe T2))
 --ejemplo = limpia f_predicado F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
-ejemplo = escher 5 T2
+--ejemplo = dibujo_t (pureDibe F)--lado 1 (pureDibe C )
 
+ejemplo = escher 1 C
 
 
 interpBas :: Output Bas
@@ -30,3 +31,4 @@ interpBas TD = trianD
 interpBas F = fShape
 interpBas R = rectan
 interpBas B = blanco
+interpBas C = curvita
