@@ -21,7 +21,7 @@ ejemplo :: Dibujo Bas
 --ejemplo = limpia f_predicado F (cuarteto ((pureDibe F)) (pureDibe T1) (pureDibe R) (pureDibe T2))
 --ejemplo = dibujo_t (pureDibe F)--lado 1 (pureDibe C )
 
-ejemplo = escher 1 C
+ejemplo = escher 1 T2
 
 
 interpBas :: Output Bas
