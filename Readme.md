@@ -1,7 +1,3 @@
----
-title: Lab de Programación Funcional
-author: Cátedra de Paradigmas
----
 # Un lenguaje que vale más que mil dibujos #
 
 Este lab propone la implementación de un lenguaje pequeño específico
@@ -11,8 +7,7 @@ como DSL (Domain Specific Language: lenguaje de dominio específico)
 porque están pensados para eso: proveer abstracciones adecuadas para
 resolver problemas acotados a cierto ámbito. La idea original del
 lenguaje está en este
-[artículo](https://cs.famaf.unc.edu.ar/~mpagano/henderson-funcgeo2.pdf "en inglés") 
-de Peter Henderson, que recomendamos leer.
+[artículo](https://eprints.soton.ac.uk/257577/1/funcgeo2.pdf).
 
 Entre las decisiones para elegir está ver si es un DSL embebido en el
 lenguaje que usamos para implementarlo (en este caso el DSL será casi
@@ -413,8 +408,7 @@ Prelude Graphics.Gloss> display win white $ circle 100
 Si tuviste un fallo al intentar importar `Graphics.Gloss` entonces
 pedí ayuda.
 
-Si tenés otro sistema operativo, es probable que o bien vos sepás
-mejor que nosotres qué hacer ó que lo más fácil sea bajar e instalar
+Si tenés otro sistema operativo, capaz lo más fácil sea bajar e instalar
 [Haskell Platform](https://www.haskell.org/platform/).
 
 
