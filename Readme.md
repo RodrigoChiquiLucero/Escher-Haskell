@@ -1,13 +1,25 @@
 # Un lenguaje que vale más que mil dibujos #
 
-Este lab propone la implementación de un lenguaje pequeño específico
-para una tarea muy concreta: combinar dibujos básicos para crear
-diseños más interesantes. A este tipo de lenguajes se lo suele conocer
-como DSL (Domain Specific Language: lenguaje de dominio específico)
-porque están pensados para eso: proveer abstracciones adecuadas para
-resolver problemas acotados a cierto ámbito. La idea original del
-lenguaje está en este
-[artículo](https://eprints.soton.ac.uk/257577/1/funcgeo2.pdf).
+
+## Objetivo final
+
+Por ejemplo con este tipo de imágen, el resultado final debería ser el siguiente: 
+
+Para ```escher 1 T2 ```
+
+![escher 1 T2](https://i.ibb.co/85PsYxT/Untitled-1-1.jpg) 
+
+Para ```escher 2 T2 ```
+
+![escher 2 T2](https://i.ibb.co/xhyN6HJ/Untitled-2-1.jpg)
+
+Para ```escher 3 T2 ```
+
+![escher 3 T2](https://i.ibb.co/kGpw7jf/Untitled-3-1.jpg)
+
+Y así susesivamente. 
+
+## Consigna
 
 Entre las decisiones para elegir está ver si es un DSL embebido en el
 lenguaje que usamos para implementarlo (en este caso el DSL será casi
