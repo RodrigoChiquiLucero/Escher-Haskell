@@ -4,7 +4,7 @@ import Graphics.Gloss.Interface.IO.Display
 import Graphics.UI.GLUT.Begin
 import Dibujo
 import Interp
-import qualified Basico.Ejemplo as E
+import qualified Ejemplo as E
 
 data Conf a = Conf {
     basic :: Output a

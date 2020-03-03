@@ -1,4 +1,4 @@
-module Basico.Escher where
+module Escher where
 import Dibujo
 import Interp
 

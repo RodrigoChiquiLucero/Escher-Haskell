@@ -1,7 +1,7 @@
-module Basico.Ejemplo where
+module Ejemplo where
 import Dibujo
 import Interp
-import Basico.Escher
+import Escher
 
 ejemplo :: Dibujo Bas
 --ejemplo = r180 $ pureDibe T1
